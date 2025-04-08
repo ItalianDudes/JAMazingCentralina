@@ -49,6 +49,12 @@ public final class JFXDefs {
             public static final String FXML_LOADING = FXML_DIR + "SceneLoading.fxml";
             public static final String FXML_MAIN_MENU = FXML_DIR + "SceneMainMenu.fxml";
             public static final String FXML_SETTINGS_EDITOR = FXML_DIR + "SceneSettingsEditor.fxml";
+            public static final String FXML_CENTRALINA = FXML_DIR + "SceneCentralina.fxml";
+            public static final class Centralina {
+                private static final String CENTRALINA_DIR = FXML_DIR + "centralina/";
+                public static final String CENTRALINA_SIMULATION = CENTRALINA_DIR + "SceneCentralinaSimulation.fxml";
+                public static final String CENTRALINA_GRAPH = CENTRALINA_DIR + "SceneCentralinaGraph.fxml";
+            }
         }
 
         // GIF Location

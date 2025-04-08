@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--suppress JavaFxDefaultTag -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaSimulation">
+   <content>
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0">
+         <children>
+            <GridPane layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label text="JAMazing Centralina">
+                     <font>
+                        <Font name="Lucida Sans Demibold" size="50.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </AnchorPane>
+   </content>
+</ScrollPane>

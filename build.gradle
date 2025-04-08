@@ -25,6 +25,7 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.17.1'
     implementation 'it.italiandudes:idl:1.0.9'
     implementation 'org.json:json:20240303'
+    implementation 'org.controlsfx:controlsfx:8.40.18'
 }
 
 shadowJar {

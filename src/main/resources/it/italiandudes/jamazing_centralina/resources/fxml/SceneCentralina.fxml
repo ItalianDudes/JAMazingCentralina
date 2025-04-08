@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--suppress JavaFxDefaultTag -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.jamazing_centralina.javafx.controllers.ControllerSceneCentralina">
+   <content>
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0">
+         <children>
+            <GridPane layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints valignment="CENTER" vgrow="NEVER" />
+               </rowConstraints>
+               <children>
+                  <Label text="JAMazing Centralina">
+                     <font>
+                        <Font name="Lucida Sans Demibold" size="50.0" />
+                     </font>
+                  </Label>
+                  <GridPane fx:id="gridPaneSwitchContainer" alignment="CENTER" GridPane.rowIndex="1">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                      <ColumnConstraints halignment="LEFT" hgrow="NEVER" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label fx:id="labelSimulation" style="-fx-font-weight: bold;" text="Simulazione" />
+                        <Label fx:id="labelGraph" text="Grafici" GridPane.columnIndex="2" />
+                     </children>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </GridPane>
+               </children>
+            </GridPane>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </AnchorPane>
+   </content>
+</ScrollPane>
