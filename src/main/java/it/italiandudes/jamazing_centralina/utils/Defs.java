@@ -17,6 +17,9 @@ public final class Defs {
     // Logger Context
     public static final String LOGGER_CONTEXT = "JAMazing Centralina";
 
+    // Repository URL
+    public static final String REPO_URL = "https://github.com/ItalianDudes/JAMazingCentralina";
+
     // Jar App Position
     public static final String JAR_POSITION;
     static {
