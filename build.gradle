@@ -1,6 +1,9 @@
 plugins {
-    id 'com.gradleup.shadow' version '8.3.5'
     id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'org.beryx.jlink' version '3.1.1'
+    id 'com.gradleup.shadow' version '8.3.5'
 }
 
 // Versioning
@@ -19,18 +22,14 @@ repositories {
     }
 }
 
-dependencies {
-    compileOnly 'org.jetbrains:annotations:26.0.1'
-    implementation 'commons-io:commons-io:2.18.0'
-    implementation 'commons-codec:commons-codec:1.17.1'
-    implementation 'it.italiandudes:idl:1.0.9'
-    implementation 'org.json:json:20240303'
-    implementation 'org.controlsfx:controlsfx:8.40.18'
+application {
+    mainClassName('it.italiandudes.jamazing_centralina.JAMazingCentralina')
+    mainModule.set('it.italiandudes.jamazing_centralina')
 }
 
 shadowJar {
     manifest {
-        attributes "Main-Class" : "it.italiandudes.jamazing_centralina.JAMazingCentralina"
+        attributes "Main-Class" : mainClassName
         attributes "Title" : "JAMazing Centralina"
         attributes "Vendor" : "ItalianDudes"
         attributes "Version" : archiveVersion.get()
@@ -42,16 +41,71 @@ shadowJar {
     archiveFileName = getRootDir().getName()+"-"+archiveVersion.get()+".jar"
 }
 
+javafx {
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.base', 'javafx.graphics', 'javafx.swing']
+    version = '21.0.1'
+}
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:26.0.1'
+    implementation 'commons-io:commons-io:2.18.0'
+    implementation 'commons-codec:commons-codec:1.17.1'
+    implementation 'it.italiandudes:idl:1.0.9'
+    implementation 'org.json:json:20240303'
+    implementation 'org.controlsfx:controlsfx:11.2.2'
+    //JavaFX dependencies for shadowJAR
+    implementation 'org.openjfx:javafx-controls:21.0.1'
+    implementation 'org.openjfx:javafx-fxml:21.0.1'
+    implementation 'org.openjfx:javafx-base:21.0.1'
+    implementation 'org.openjfx:javafx-graphics:21.0.1'
+    implementation 'org.openjfx:javafx-swing:21.0.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jlink {
+    launcher {
+        name = project.name
+    }
+}
+
+run {
+    jvmArgs = [
+            '--add-exports=javafx.graphics/com.sun.javafx.application=JAMazingCentralina.main',
+            '--add-opens=javafx.graphics/com.sun.javafx.application=JAMazingCentralina.main'
+    ]
+}
+
 tasks.register('buildJar') {
     dependsOn shadowJar
+    run {
+        jvmArgs = [
+                '--add-exports=javafx.graphics/com.sun.javafx.application=JAMazingCentralina.main',
+                '--add-opens=javafx.graphics/com.sun.javafx.application=JAMazingCentralina.main'
+        ]
+    }
     group = "Build"
     description = "Build and assemble the project"
 }
 
 tasks.register('runClient', Exec) {
     dependsOn shadowJar
+    run {
+        jvmArgs = [
+                '--add-exports=javafx.graphics/com.sun.javafx.application=JAMazingCentralina.main',
+                '--add-opens=javafx.graphics/com.sun.javafx.application=JAMazingCentralina.main'
+        ]
+    }
     group = "Execution"
     description = "Build, assemble and run the project"
     standardInput = System.in
     commandLine "java", "-jar", jar.archiveFile.get()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += [
+            '--add-exports=javafx.graphics/com.sun.javafx.application=JAMazingCentralina.main',
+    ]
 }
