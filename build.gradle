@@ -23,7 +23,9 @@ repositories {
 
 // JavaFX Configuration
 javafx {
-    version = "21.0.7"
+    // Original version: "version = "21.0.7"". The features used are from version=23.0.1, as written here.
+    // DO NOT CHANGE if not of upmost importance.
+    version = "23.0.1"
     modules = [
             'javafx.base',
             'javafx.controls',

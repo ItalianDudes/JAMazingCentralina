@@ -53,7 +53,7 @@ public final class JFXDefs {
             public static final class Centralina {
                 private static final String CENTRALINA_DIR = FXML_DIR + "centralina/";
                 public static final String CENTRALINA_SIMULATION = CENTRALINA_DIR + "SceneCentralinaSimulation.fxml";
-                public static final String CENTRALINA_GRAPH = CENTRALINA_DIR + "SceneCentralinaGraph.fxml";
+                public static final String CENTRALINA_GRAPHS = CENTRALINA_DIR + "SceneCentralinaGraphs.fxml";
             }
         }
 
