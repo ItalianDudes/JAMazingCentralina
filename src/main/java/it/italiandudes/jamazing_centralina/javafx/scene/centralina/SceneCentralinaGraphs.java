@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.util.Objects;
 
-public class SceneCentralinaGraphs {
+public final class SceneCentralinaGraphs {
     // Scene Generator
     @NotNull
     public static SceneController getScene() {

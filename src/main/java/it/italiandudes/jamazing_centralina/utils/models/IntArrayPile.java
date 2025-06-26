@@ -1,0 +1,35 @@
+package it.italiandudes.jamazing_centralina.utils.models;
+
+import org.jetbrains.annotations.NotNull;
+
+public final class IntArrayPile {
+    private int capacity;
+    private int size;
+    private int[] elements;
+
+    public IntArrayPile(int capacity) {
+        this.capacity = capacity;
+        this.size = 0;
+        this.elements = new int[capacity];
+    }
+
+    public void addElement (int element){
+        if(size == capacity-1){
+            for(int i=0; i<capacity-1; i++){
+                this.elements[i] = this.elements[i+1];
+            }
+            this.elements[size] = element;
+        }else{
+            elements[size] = element;
+            size++;
+        }
+    }
+
+    public int[] getElements(){
+        return elements.clone();
+    }
+
+    public int getLastElement(){
+        return elements[this.size];
+    }
+}

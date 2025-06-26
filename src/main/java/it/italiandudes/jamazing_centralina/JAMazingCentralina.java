@@ -1,21 +1,31 @@
 package it.italiandudes.jamazing_centralina;
 
+import com.fazecast.jSerialComm.SerialPort;
 import it.italiandudes.idl.common.JarHandler;
 import it.italiandudes.idl.common.TargetPlatform;
 import it.italiandudes.jamazing_centralina.javafx.Client;
+import it.italiandudes.jamazing_centralina.javafx.components.SceneController;
+import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaGraphs;
+import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaSimulation;
+import it.italiandudes.jamazing_centralina.javafx.scene.centralina.SceneCentralinaGraphs;
+import it.italiandudes.jamazing_centralina.javafx.scene.centralina.SceneCentralinaSimulation;
 import it.italiandudes.jamazing_centralina.utils.Defs;
 import it.italiandudes.idl.common.InfoFlags;
 import it.italiandudes.idl.common.Logger;
+import it.italiandudes.jamazing_centralina.utils.models.LoadedDataHandler;
+import it.italiandudes.jamazing_centralina.utils.models.ParsedSerialData;
 import javafx.application.Platform;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.jar.Attributes;
 
 public final class JAMazingCentralina {
+    private static boolean threadStop = false;
 
     // Main Method
     public static void main(String[] args) {
@@ -82,6 +92,16 @@ public final class JAMazingCentralina {
             return;
         }
 
+        Logger.log("Starting serial thread...");
+        try{
+            startSerialReader();
+            Logger.log("Serial thread started successfully");
+        } catch (RuntimeException e){
+            Logger.log(e, new InfoFlags(true, true, true, true));
+            Logger.close();
+            System.exit(-1);
+        }
+
         // Start the client
         try {
             Logger.log("Starting UI...");
@@ -94,6 +114,48 @@ public final class JAMazingCentralina {
         }
     }
 
+    private static void startSerialReader() {
+        SerialPort comPort = SerialPort.getCommPort("COM6"); // cambia porta se necessario (es. /dev/ttyUSB0 su Linux)
+        comPort.setBaudRate(9600);
+        comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 0, 0);
+
+        if (!comPort.openPort()) {
+            System.out.println();
+            throw new RuntimeException("Unable to open the serial port. Selected port:\n" + comPort);
+        }
+
+        Thread serialThread = new Thread(() -> {
+            try (InputStream in = comPort.getInputStream()) {
+                ControllerSceneCentralinaSimulation simController = (ControllerSceneCentralinaSimulation) SceneCentralinaSimulation.getScene().getController();
+                ControllerSceneCentralinaGraphs graphsController = (ControllerSceneCentralinaGraphs) SceneCentralinaGraphs.getScene().getController();
+                ParsedSerialData parsedSerialData = new ParsedSerialData();
+                LoadedDataHandler loadedDataHandler = new LoadedDataHandler();
+                StringBuilder buffer = new StringBuilder();
+                int data;
+                while (!threadStop && (data = in.read()) != -1) {
+                    char ch = (char) data;
+                    if (ch == '\n') {
+                        String line = buffer.toString().trim();
+                        buffer.setLength(0);
+                        System.out.println(line);
+                        parsedSerialData.parseData(line);
+
+                        //Platform.runLater(() -> outputArea.appendText(line + "\n"));
+                    } else {
+                        buffer.append(ch);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                comPort.closePort();
+            }
+        });
+
+        serialThread.setDaemon(true);
+        serialThread.start();
+    }
+
     // Exit Methods
     public static void exit() {
         exit(0);
@@ -104,6 +166,7 @@ public final class JAMazingCentralina {
         } else {
             Logger.log("Exit Method Called, exiting JAMazingCentralina...", Defs.LOGGER_CONTEXT);
         }
+        threadStop = true;
         Platform.runLater(() -> Client.getStage().hide());
         Logger.close();
         Platform.exit();

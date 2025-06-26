@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public final class ControllerSceneCentralinaSimulation implements Initializable {
+
     @FXML private Button btn_onoff;
     @FXML private HBox hbox_signals;
     @FXML private SVGPath svgp_gasoline_signal;
@@ -22,5 +23,29 @@ public final class ControllerSceneCentralinaSimulation implements Initializable 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+    }
+
+    public Button getBtn_onoff() {
+        return btn_onoff;
+    }
+
+    public HBox getHbox_signals() {
+        return hbox_signals;
+    }
+
+    public SVGPath getSvgp_gasoline_signal() {
+        return svgp_gasoline_signal;
+    }
+
+    public ProgressBar getPb_gasoline_percentage() {
+        return pb_gasoline_percentage;
+    }
+
+    public Label getLbl_gasoline_percentage() {
+        return lbl_gasoline_percentage;
+    }
+
+    public Label getLbl_speed_counter() {
+        return lbl_speed_counter;
     }
 }

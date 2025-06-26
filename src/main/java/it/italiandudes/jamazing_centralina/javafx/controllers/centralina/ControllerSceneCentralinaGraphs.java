@@ -5,7 +5,7 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ControllerSceneCentralinaGraphs implements Initializable {
+public final class ControllerSceneCentralinaGraphs implements Initializable {
 
 
     @Override
