@@ -4,11 +4,10 @@ import com.fazecast.jSerialComm.SerialPort;
 import it.italiandudes.idl.common.JarHandler;
 import it.italiandudes.idl.common.TargetPlatform;
 import it.italiandudes.jamazing_centralina.javafx.Client;
-import it.italiandudes.jamazing_centralina.javafx.components.SceneController;
+import it.italiandudes.jamazing_centralina.javafx.JFXDefs;
+import it.italiandudes.jamazing_centralina.javafx.controllers.ControllerSceneCentralina;
 import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaGraphs;
 import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaSimulation;
-import it.italiandudes.jamazing_centralina.javafx.scene.centralina.SceneCentralinaGraphs;
-import it.italiandudes.jamazing_centralina.javafx.scene.centralina.SceneCentralinaSimulation;
 import it.italiandudes.jamazing_centralina.utils.Defs;
 import it.italiandudes.idl.common.InfoFlags;
 import it.italiandudes.idl.common.Logger;
@@ -26,6 +25,7 @@ import java.util.jar.Attributes;
 
 public final class JAMazingCentralina {
     private static boolean threadStop = false;
+    private static boolean isSerialOpen = false;
 
     // Main Method
     public static void main(String[] args) {
@@ -92,16 +92,6 @@ public final class JAMazingCentralina {
             return;
         }
 
-        Logger.log("Starting serial thread...");
-        try{
-            startSerialReader();
-            Logger.log("Serial thread started successfully");
-        } catch (RuntimeException e){
-            Logger.log(e, new InfoFlags(true, true, true, true));
-            Logger.close();
-            System.exit(-1);
-        }
-
         // Start the client
         try {
             Logger.log("Starting UI...");
@@ -112,9 +102,21 @@ public final class JAMazingCentralina {
             Logger.close();
             System.exit(-1);
         }
+
+        Logger.log("Starting serial thread...");
+        try{
+            startSerialReader();
+            Logger.log("Serial thread started successfully");
+        } catch (RuntimeException e){
+            Logger.log(e, new InfoFlags(true, true, true, true));
+            Logger.close();
+            System.exit(-1);
+        }
     }
 
-    private static void startSerialReader() {
+    public static void startSerialReader() {
+        if (isSerialOpen) return;
+        isSerialOpen = true;
         SerialPort comPort = SerialPort.getCommPort("COM6"); // cambia porta se necessario (es. /dev/ttyUSB0 su Linux)
         comPort.setBaudRate(9600);
         comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 0, 0);
@@ -126,8 +128,10 @@ public final class JAMazingCentralina {
 
         Thread serialThread = new Thread(() -> {
             try (InputStream in = comPort.getInputStream()) {
-                ControllerSceneCentralinaSimulation simController = (ControllerSceneCentralinaSimulation) SceneCentralinaSimulation.getScene().getController();
-                ControllerSceneCentralinaGraphs graphsController = (ControllerSceneCentralinaGraphs) SceneCentralinaGraphs.getScene().getController();
+                Object controller = Client.getScene().getController();
+                if (!(controller instanceof ControllerSceneCentralina controllerSceneCentralina)) return;
+                ControllerSceneCentralinaSimulation simController = (ControllerSceneCentralinaSimulation) controllerSceneCentralina.getSceneControllerCentralinaSimulation().getController();
+                ControllerSceneCentralinaGraphs graphsController = (ControllerSceneCentralinaGraphs) controllerSceneCentralina.getSceneControllerCentralinaGraph().getController();
                 ParsedSerialData parsedSerialData = new ParsedSerialData();
                 LoadedDataHandler loadedDataHandler = new LoadedDataHandler();
                 StringBuilder buffer = new StringBuilder();
@@ -173,7 +177,7 @@ public final class JAMazingCentralina {
         });
 
         serialThread.setDaemon(true);
-        serialThread.start();
+        JFXDefs.startServiceTask(serialThread);
     }
 
     // Exit Methods

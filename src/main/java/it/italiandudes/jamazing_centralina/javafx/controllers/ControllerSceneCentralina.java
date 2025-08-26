@@ -1,17 +1,20 @@
 package it.italiandudes.jamazing_centralina.javafx.controllers;
 
+import it.italiandudes.jamazing_centralina.JAMazingCentralina;
 import it.italiandudes.jamazing_centralina.javafx.JFXDefs;
+import it.italiandudes.jamazing_centralina.javafx.components.SceneController;
 import it.italiandudes.jamazing_centralina.javafx.scene.centralina.SceneCentralinaGraphs;
 import it.italiandudes.jamazing_centralina.javafx.scene.centralina.SceneCentralinaSimulation;
-import it.italiandudes.jamazing_centralina.utils.Defs;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import org.controlsfx.control.ToggleSwitch;
 
 public final class ControllerSceneCentralina {
+
+    // Attributes
+    private SceneController sceneControllerCentralinaSimulation;
+    private SceneController sceneControllerCentralinaGraph;
 
     // Graphic Elements
     @FXML private GridPane gridPaneSwitchContainer;
@@ -23,15 +26,19 @@ public final class ControllerSceneCentralina {
     // Initialize
     @FXML
     private void initialize() {
-        gp_main_centralina_pane.add(SceneCentralinaSimulation.getScene().getParent(),0,0);
+        sceneControllerCentralinaSimulation = SceneCentralinaSimulation.getScene();
+        sceneControllerCentralinaGraph = SceneCentralinaGraphs.getScene();
+        JFXDefs.startServiceTask(JAMazingCentralina::startSerialReader);
+
+        gp_main_centralina_pane.add(sceneControllerCentralinaSimulation.getParent(),0,0);
         toggleSwitchChangeMode = new ToggleSwitch();
         toggleSwitchChangeMode.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                gp_main_centralina_pane.add(SceneCentralinaGraphs.getScene().getParent(),0,0);
+                gp_main_centralina_pane.add(sceneControllerCentralinaGraph.getParent(),0,0);
                 labelSimulation.setStyle("");
                 labelGraph.setStyle("-fx-font-weight: bold;");
             } else {
-                gp_main_centralina_pane.add(SceneCentralinaSimulation.getScene().getParent(),0,0);
+                gp_main_centralina_pane.add(sceneControllerCentralinaSimulation.getParent(),0,0);
                 labelSimulation.setStyle("-fx-font-weight: bold;");
                 labelGraph.setStyle("");
             }
@@ -46,5 +53,11 @@ public final class ControllerSceneCentralina {
     }
 
     // EDT
+    public SceneController getSceneControllerCentralinaSimulation() {
+        return sceneControllerCentralinaSimulation;
+    }
+    public SceneController getSceneControllerCentralinaGraph() {
+        return sceneControllerCentralinaGraph;
+    }
 
 }
