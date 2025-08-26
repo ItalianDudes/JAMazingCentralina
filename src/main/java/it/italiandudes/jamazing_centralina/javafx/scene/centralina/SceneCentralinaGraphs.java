@@ -4,6 +4,7 @@ import it.italiandudes.idl.common.Logger;
 import it.italiandudes.jamazing_centralina.javafx.Client;
 import it.italiandudes.jamazing_centralina.javafx.JFXDefs;
 import it.italiandudes.jamazing_centralina.javafx.components.SceneController;
+import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaGraphs;
 import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaSimulation;
 import it.italiandudes.jamazing_centralina.utils.Defs;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +26,7 @@ public final class SceneCentralinaGraphs {
         try {
             FXMLLoader loader = new FXMLLoader(Defs.Resources.get(JFXDefs.Resources.FXML.Centralina.CENTRALINA_GRAPHS));
             Parent root = loader.load();
-            ControllerSceneCentralinaSimulation controller = loader.getController();
+            ControllerSceneCentralinaGraphs controller = loader.getController();
             return new SceneController(root, controller);
         } catch (IOException e) {
             Logger.log(e, Defs.LOGGER_CONTEXT);

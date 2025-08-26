@@ -131,18 +131,38 @@ public final class JAMazingCentralina {
                 ParsedSerialData parsedSerialData = new ParsedSerialData();
                 LoadedDataHandler loadedDataHandler = new LoadedDataHandler();
                 StringBuilder buffer = new StringBuilder();
+                boolean firstline = true;
                 int data;
                 while (!threadStop && (data = in.read()) != -1) {
-                    char ch = (char) data;
-                    if (ch == '\n') {
-                        String line = buffer.toString().trim();
-                        buffer.setLength(0);
-                        System.out.println(line);
-                        parsedSerialData.parseData(line);
+                    try{
+                        char ch = (char) data;
+                        if (ch == '\n') {
+                            String line = buffer.toString().trim();
+                            buffer.setLength(0);
+                            System.out.println(line);
+                            parsedSerialData.parseData(line);
 
-                        //Platform.runLater(() -> outputArea.appendText(line + "\n"));
-                    } else {
-                        buffer.append(ch);
+                            if(firstline){
+                                loadedDataHandler.initData(parsedSerialData, 50, 50,
+                                        50, 50, 50,
+                                        50, 0.98);
+                                firstline = false;
+                            }else{
+                                loadedDataHandler.updateData(parsedSerialData);
+                            }
+
+                            Platform.runLater(() -> {
+                                graphsController.updateDistanceChart(loadedDataHandler.getDistanceDataBatch());
+                                graphsController.updateVelocityChart(loadedDataHandler.getVelocityDataBatch());
+                            });
+
+                            //Platform.runLater(() -> outputArea.appendText(line + "\n"));
+                        } else {
+                            buffer.append(ch);
+                        }
+
+                    }catch (Exception e){
+                        Logger.log("Discarded serial string because of unreadable data caused by an error in the communication", new InfoFlags(true, true, false,true));
                     }
                 }
             } catch (Exception e) {

@@ -1,5 +1,7 @@
 package it.italiandudes.jamazing_centralina.utils.models;
 
+import java.util.Arrays;
+
 public final class DoubleArrayPile {
     private int capacity;
     private int size;
@@ -12,7 +14,7 @@ public final class DoubleArrayPile {
     }
 
     public void addElement (double element){
-        if(size == capacity-1){
+        if(size >= capacity-1){
             for(int i=0; i<capacity-1; i++){
                 this.elements[i] = this.elements[i+1];
             }
@@ -24,10 +26,15 @@ public final class DoubleArrayPile {
     }
 
     public double[] getElements(){
-        return elements.clone();
+        return Arrays.copyOfRange(elements, 0, size);
     }
 
     public double getLastElement(){
         return elements[this.size];
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(this.elements);
     }
 }

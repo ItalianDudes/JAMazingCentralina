@@ -2,6 +2,8 @@ package it.italiandudes.jamazing_centralina.utils.models;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 public final class IntArrayPile {
     private int capacity;
     private int size;
@@ -26,10 +28,15 @@ public final class IntArrayPile {
     }
 
     public int[] getElements(){
-        return elements.clone();
+        return Arrays.copyOfRange(elements, 0, size);
     }
 
     public int getLastElement(){
         return elements[this.size];
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(this.elements);
     }
 }
