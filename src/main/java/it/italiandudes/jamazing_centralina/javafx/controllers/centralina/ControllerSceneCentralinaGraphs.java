@@ -33,9 +33,9 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
     // Initialize
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        NumberAxis xAxis = new NumberAxis(0, 0.75, 0.75);
+        NumberAxis xAxis = new NumberAxis(50, 0.75, 0.75);
         xAxis.setTickLabelsVisible(false);
-        NumberAxis yAxis = new NumberAxis(0, Y_AXIS_UPPER_BOUND, Y_AXIS_UPPER_BOUND);
+        NumberAxis yAxis = new NumberAxis(50, Y_AXIS_UPPER_BOUND, Y_AXIS_UPPER_BOUND);
         yAxis.setTickLabelsVisible(false);
 
         distanceChart = new LineChart<>(xAxis, yAxis);
