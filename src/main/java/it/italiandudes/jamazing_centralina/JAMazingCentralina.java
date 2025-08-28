@@ -143,7 +143,7 @@ public final class JAMazingCentralina {
                         if (ch == '\n') {
                             String line = buffer.toString().trim();
                             buffer.setLength(0);
-                            System.out.println(line);
+                            //System.out.println(line);
                             parsedSerialData.parseData(line);
 
                             if(firstline){

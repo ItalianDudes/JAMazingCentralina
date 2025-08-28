@@ -2,7 +2,11 @@ package it.italiandudes.jamazing_centralina.utils.models;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 public final class LoadedDataHandler {
+
+    private final double G = 9.81;
 
     private ParsedSerialData parsedSerialData;
     private IntArrayPile distanceDataBatch;
@@ -55,12 +59,14 @@ public final class LoadedDataHandler {
 
         int[] accelerations = parsedSerialData.getAcceleration();
         double[] presentAcc = new double[3];
-        presentAcc[0] = Math.pow(accelerations[0], -3);
-        presentAcc[1] = Math.pow(accelerations[1], -3);
-        presentAcc[2] = Math.pow(accelerations[2], -3);
+        presentAcc[0] = accelerations[0];
+        presentAcc[1] = accelerations[1];
+        presentAcc[2] = accelerations[2];
 
+        //System.out.println("Present acc: \n" + Arrays.toString(presentAcc));
         accelerationDataBatch.addElement(getAccModule(presentAcc[0], presentAcc[1], presentAcc[2]));
         velocityDataBatch.addElement(getVelocityModule(presentAcc, parsedSerialData.getTimePeriod()));
+        System.out.println("Velocity batch: \n" + velocityDataBatch);
         degreeRateBatch.addElement(getPitchAngle(presentAcc[0], presentAcc[1], presentAcc[2],
                 Math.pow(parsedSerialData.getDegreeRates()[0], -3), parsedSerialData.getTimePeriod()));
 
@@ -70,7 +76,7 @@ public final class LoadedDataHandler {
     private double getPitchAngle(double accX, double accY, double accZ, double gyroX, int dt) {
         double accelPitch = Math.atan2(-accX, Math.sqrt(accY * accY + accZ * accZ)) * (180.0 / Math.PI);
 
-        double pitchAngle = gyroX * Math.pow(dt, -6);
+        double pitchAngle = gyroX * dt * Math.pow(10, -6);
 
         pitchAngle = this.alpha * pitchAngle + (1.0 - this.alpha) * accelPitch;
 
@@ -81,20 +87,26 @@ public final class LoadedDataHandler {
     // vector. It returns a double only containing the actual velocity module after using the past and present
     // accelerations to obtain the velocity between 2 points in a 3D space.
     private double getVelocityModule(double @NotNull [] presentAcc, int dt){
-        double actualPresentAccX = presentAcc[0] * 9.81;
-        double actualPresentAccY = presentAcc[1] * 9.81;
-        double actualPresentAccZ = presentAcc[2] * 9.81;
-        double actualDt = Math.pow(dt, -6);
+        double actualPresentAccX = presentAcc[0] * G;
+        double actualPresentAccY = presentAcc[1] * G;
+        double actualPresentAccZ = presentAcc[2] * G;
+        double actualDt = dt * Math.pow(10, -6);
+
+        //System.out.println("ActualPresentAcc: \n[" + actualPresentAccX + ", " + actualPresentAccY + ", " + actualPresentAccZ + "]");
 
         double[] accAvg = new double[3];
-        accAvg[0] = (actualPresentAccX + (this.pastAcc[0] * 9.81))/2.0;
-        accAvg[1] = (actualPresentAccY + (this.pastAcc[1] * 9.81))/2.0;
-        accAvg[2] = (actualPresentAccZ + (this.pastAcc[2] * 9.81))/2.0;
+        accAvg[0] = (actualPresentAccX + (this.pastAcc[0] * G))/2.0;
+        accAvg[1] = (actualPresentAccY + (this.pastAcc[1] * G))/2.0;
+        accAvg[2] = (actualPresentAccZ + (this.pastAcc[2] * G))/2.0;
+
+        //System.out.println("AccAvg: \n" + Arrays.toString(accAvg));
 
         double[] finalVectorialVel = new double[3];
         finalVectorialVel[0] = accAvg[0] * actualDt;
         finalVectorialVel[1] = accAvg[1] * actualDt;
         finalVectorialVel[2] = accAvg[2] * actualDt;
+
+        //System.out.println("FinalVectorialVel: \n" + Arrays.toString(finalVectorialVel));
 
         return Math.sqrt(finalVectorialVel[0] * finalVectorialVel[0] + finalVectorialVel[1] * finalVectorialVel[1] +
                 finalVectorialVel[2] * finalVectorialVel[2]);

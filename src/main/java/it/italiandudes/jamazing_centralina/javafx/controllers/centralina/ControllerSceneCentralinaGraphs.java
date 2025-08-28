@@ -69,7 +69,8 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         for (int i=0; i<values.length; i++) {
             double value = values[i];
             if (value == Double.NEGATIVE_INFINITY || value == Double.POSITIVE_INFINITY) value = 0;
-            value = Double.parseDouble(velocityFormatter.format(value));
+            System.out.println("Value: " + value);
+            value = (double) Math.round(value * 100) /100;
             series.getData().add(new XYChart.Data<>(i, value));
         }
         velocityChart.getData().add(series);
