@@ -19,6 +19,13 @@ public final class LoadedDataHandler {
     private double[] pastAcc;
     private double alpha;
 
+    private double rollGyro;
+    private double pitchGyro;
+    private double roll;
+    private double pitch;
+
+    private boolean isInitFilter;
+
     public void initData(ParsedSerialData parsedSerialData, int maxDistanceBatchSize, int maxHumidityBatchSize,
                             int maxTemperatureBatchSize, int maxPressureBatchSize, int maxAccelerationBatchSize,
                             int maxDegreeRateBatchSize, double alpha){
@@ -47,6 +54,8 @@ public final class LoadedDataHandler {
         degreeRateBatch.addElement(getPitchAngle(presentAcc[0], presentAcc[1], presentAcc[2],
                 parsedSerialData.getDegreeRates()[0], parsedSerialData.getTimePeriod()));
         pastAcc = presentAcc.clone();
+
+        this.isInitFilter = true;
     }
 
     public void updateData(ParsedSerialData parsedSerialData){
@@ -65,12 +74,14 @@ public final class LoadedDataHandler {
 
         //System.out.println("Present acc: \n" + Arrays.toString(presentAcc));
         accelerationDataBatch.addElement(getAccModule(presentAcc[0], presentAcc[1], presentAcc[2]));
-        velocityDataBatch.addElement(getVelocityModule(presentAcc, parsedSerialData.getTimePeriod()));
+        velocityDataBatch.addElement(getVelocityModule(presentAcc, parsedSerialData.getTimePeriod(),
+                parsedSerialData.getDegreeRates()[0], parsedSerialData.getDegreeRates()[1], this.isInitFilter));
+        if(this.isInitFilter){
+            this.isInitFilter = false;
+        }
         System.out.println("Velocity batch: \n" + velocityDataBatch);
         degreeRateBatch.addElement(getPitchAngle(presentAcc[0], presentAcc[1], presentAcc[2],
                 Math.pow(parsedSerialData.getDegreeRates()[0], -3), parsedSerialData.getTimePeriod()));
-
-        pastAcc = presentAcc.clone();
     }
 
     private double getPitchAngle(double accX, double accY, double accZ, double gyroX, int dt) {
@@ -86,20 +97,48 @@ public final class LoadedDataHandler {
     // This method takes into consideration the fact that the velocity is actually a three-dimensional
     // vector. It returns a double only containing the actual velocity module after using the past and present
     // accelerations to obtain the velocity between 2 points in a 3D space.
-    private double getVelocityModule(double @NotNull [] presentAcc, int dt){
-        double actualPresentAccX = presentAcc[0] * G;
-        double actualPresentAccY = presentAcc[1] * G;
-        double actualPresentAccZ = presentAcc[2] * G;
+    private double getVelocityModule(double @NotNull [] presentAcc, double gyroX, double gyroY, int dt, boolean isInit){
+        double[] actualPresentAcc = new double[3];
+        actualPresentAcc[0] = presentAcc[0] * G;
+        actualPresentAcc[1] = presentAcc[1] * G;
+        actualPresentAcc[2] = presentAcc[2] * G;
         double actualDt = dt * Math.pow(10, -6);
 
         //System.out.println("ActualPresentAcc: \n[" + actualPresentAccX + ", " + actualPresentAccY + ", " + actualPresentAccZ + "]");
 
-        double[] accAvg = new double[3];
-        accAvg[0] = (actualPresentAccX + (this.pastAcc[0] * G))/2.0;
-        accAvg[1] = (actualPresentAccY + (this.pastAcc[1] * G))/2.0;
-        accAvg[2] = (actualPresentAccZ + (this.pastAcc[2] * G))/2.0;
+        //Complementary filter: used to delete the G component from all axes
+        double rollAcc = Math.atan2(actualPresentAcc[1], Math.sqrt(actualPresentAcc[0] * actualPresentAcc[0] + actualPresentAcc[2] * actualPresentAcc[2]));
+        double pitchAcc = Math.atan2(-actualPresentAcc[0], Math.sqrt(actualPresentAcc[1] * actualPresentAcc[1] + actualPresentAcc[2] * actualPresentAcc[2]));
 
-        //System.out.println("AccAvg: \n" + Arrays.toString(accAvg));
+
+        if(isInit){
+            this.rollGyro = rollAcc;
+            this.roll = rollAcc;
+            this.pitchGyro = pitchAcc;
+            this.pitch = pitchAcc;
+        }else{
+            this.rollGyro += gyroX * (Math.PI/180.0) * actualDt;
+            this.pitchGyro += gyroY * (Math.PI/180.0) * actualDt;
+
+            roll = this.alpha * this.rollGyro + (1 - this.alpha) * rollAcc;
+            pitch = this.alpha * this.pitchGyro + (1 - this.alpha) * pitchAcc;
+        }
+
+        double gX = G * Math.pow(10, 3) * Math.sin(pitch);
+        double gY = -G * Math.pow(10, 3) * Math.sin(roll);
+        double gZ = G * Math.cos(pitch) * Math.cos(roll);
+        
+        double[] filteredAcc = new double[3];
+        filteredAcc[0] = actualPresentAcc[0] - gX;
+        filteredAcc[1] = actualPresentAcc[1] - gY;
+        filteredAcc[2] = actualPresentAcc[2] - gZ;
+
+        double[] accAvg = new double[3];
+        accAvg[0] = (filteredAcc[0] + (this.pastAcc[0]))/2.0;
+        accAvg[1] = (filteredAcc[1] + (this.pastAcc[1]))/2.0;
+        accAvg[2] = (filteredAcc[2] + (this.pastAcc[2]))/2.0;
+
+        System.out.println("AccAvg: \n" + Arrays.toString(accAvg));
 
         double[] finalVectorialVel = new double[3];
         finalVectorialVel[0] = accAvg[0] * actualDt;
@@ -108,8 +147,14 @@ public final class LoadedDataHandler {
 
         //System.out.println("FinalVectorialVel: \n" + Arrays.toString(finalVectorialVel));
 
-        return Math.sqrt(finalVectorialVel[0] * finalVectorialVel[0] + finalVectorialVel[1] * finalVectorialVel[1] +
+        this.pastAcc = finalVectorialVel.clone();
+        double finalVelocityModule = Math.sqrt(finalVectorialVel[0] * finalVectorialVel[0] + finalVectorialVel[1] * finalVectorialVel[1] +
                 finalVectorialVel[2] * finalVectorialVel[2]);
+        if(finalVelocityModule > 100.0){
+            return finalVelocityModule;
+        }else{
+            return 0.0;
+        }
     }
 
     // This method takes into consideration the fact that the acceleration is actually a three-dimensional

@@ -69,7 +69,7 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         for (int i=0; i<values.length; i++) {
             double value = values[i];
             if (value == Double.NEGATIVE_INFINITY || value == Double.POSITIVE_INFINITY) value = 0;
-            System.out.println("Value: " + value);
+            //System.out.println("Value: " + value);
             value = (double) Math.round(value * 100) /100;
             series.getData().add(new XYChart.Data<>(i, value));
         }
