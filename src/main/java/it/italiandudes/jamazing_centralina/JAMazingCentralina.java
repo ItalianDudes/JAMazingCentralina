@@ -13,6 +13,7 @@ import it.italiandudes.idl.common.InfoFlags;
 import it.italiandudes.idl.common.Logger;
 import it.italiandudes.jamazing_centralina.utils.models.LoadedDataHandler;
 import it.italiandudes.jamazing_centralina.utils.models.ParsedSerialData;
+import it.italiandudes.jamazing_centralina.utils.models.Simulation;
 import javafx.application.Platform;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.Nullable;
@@ -128,12 +129,14 @@ public final class JAMazingCentralina {
 
         Thread serialThread = new Thread(() -> {
             try (InputStream in = comPort.getInputStream()) {
+                ParsedSerialData parsedSerialData = new ParsedSerialData();
+                LoadedDataHandler loadedDataHandler = new LoadedDataHandler();
+                Simulation sim = new Simulation(loadedDataHandler);
                 Object controller = Client.getScene().getController();
                 if (!(controller instanceof ControllerSceneCentralina controllerSceneCentralina)) return;
                 ControllerSceneCentralinaSimulation simController = (ControllerSceneCentralinaSimulation) controllerSceneCentralina.getSceneControllerCentralinaSimulation().getController();
+                simController.setCentralinaSim(sim);
                 ControllerSceneCentralinaGraphs graphsController = (ControllerSceneCentralinaGraphs) controllerSceneCentralina.getSceneControllerCentralinaGraph().getController();
-                ParsedSerialData parsedSerialData = new ParsedSerialData();
-                LoadedDataHandler loadedDataHandler = new LoadedDataHandler();
                 StringBuilder buffer = new StringBuilder();
                 boolean firstline = true;
                 int data;
@@ -155,7 +158,10 @@ public final class JAMazingCentralina {
                                 loadedDataHandler.updateData(parsedSerialData);
                             }
 
+                            sim.runSimCycle();
+
                             Platform.runLater(() -> {
+                                simController.updateSimulation();
                                 graphsController.updateDistanceChart(loadedDataHandler.getDistanceDataBatch());
                                 graphsController.updateVelocityChart(loadedDataHandler.getVelocityDataBatch());
                             });

@@ -41,7 +41,7 @@
                      <children>
                         <VBox alignment="CENTER" spacing="10.0" GridPane.rowIndex="1">
                            <children>
-                              <Button fx:id="btn_onoff" mnemonicParsing="false" text="Button" VBox.vgrow="ALWAYS" />
+                              <Button fx:id="btn_onoff" mnemonicParsing="false" onAction="#onoff_pressed" text="Button" VBox.vgrow="ALWAYS" />
                               <HBox fx:id="hbox_signals" alignment="CENTER" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
