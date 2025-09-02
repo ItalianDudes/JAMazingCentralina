@@ -150,9 +150,9 @@ public final class JAMazingCentralina {
                             parsedSerialData.parseData(line);
 
                             if(firstline){
-                                loadedDataHandler.initData(parsedSerialData, 50, 50,
-                                        50, 50, 50,
-                                        50, 0.98);
+                                loadedDataHandler.initData(parsedSerialData, Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE,
+                                        Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE,
+                                        Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE, 0.98);
                                 firstline = false;
                             }else{
                                 loadedDataHandler.updateData(parsedSerialData);
@@ -162,8 +162,11 @@ public final class JAMazingCentralina {
 
                             Platform.runLater(() -> {
                                 simController.updateSimulation();
-                                graphsController.updateDistanceChart(loadedDataHandler.getDistanceDataBatch());
-                                graphsController.updateVelocityChart(loadedDataHandler.getVelocityDataBatch());
+                                graphsController.updateDistanceChart(loadedDataHandler.getDistanceDataBatch(), loadedDataHandler.getTimeDataBatch());
+                                graphsController.updateVelocityChart(loadedDataHandler.getVelocityDataBatch(), loadedDataHandler.getTimeDataBatch());
+                                graphsController.updateTemperatureChart(loadedDataHandler.getTemperatureDataBatch(), loadedDataHandler.getTimeDataBatch());
+                                graphsController.updateHumidityChart(loadedDataHandler.getHumidityDataBatch(), loadedDataHandler.getTimeDataBatch());
+                                graphsController.updatePressureChart(loadedDataHandler.getPressureDataBatch(), loadedDataHandler.getTimeDataBatch());
                             });
 
                             //Platform.runLater(() -> outputArea.appendText(line + "\n"));

@@ -69,4 +69,8 @@ public final class Defs {
             public static final String IMAGE_CROSS = IMAGE_DIR + "cross.png";
         }
     }
+
+    public static final class SimulationSettings {
+        public static final int MAX_BATCH_SIZE = 50;
+    }
 }

@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
 <ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.jamazing_centralina.javafx.controllers.ControllerSceneCentralina">
    <content>
@@ -40,6 +41,7 @@
                         <Insets />
                      </GridPane.margin>
                   </GridPane>
+                  <StackPane fx:id="sp_placeholder_pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
                </children>
             </GridPane>
          </children>

@@ -77,6 +77,11 @@ public final class JFXDefs {
             public static final String IMAGE_FILE_EXPLORER = IMAGE_DIR+"file-explorer.png";
             public static final String IMAGE_PLAY = IMAGE_DIR + "play.png";
             public static final String IMAGE_STOP = IMAGE_DIR + "stop.png";
+            public static final String IMAGE_CAR_PARKED = IMAGE_DIR + "car-parked.png";
+            public static final String IMAGE_ENGINE_TEMP_TOO_HIGH = IMAGE_DIR + "engine-coolant-temp-too-high.png";
+            public static final String IMAGE_GAS_TANK_NORMAL = IMAGE_DIR + "gas-tank-normal.png";
+            public static final String IMAGE_GAS_TANK_RESERVE = IMAGE_DIR + "gas-tank-reserve.png";
+            public static final String IMAGE_TIRE_PRESSURE_LOW = IMAGE_DIR + "tire-pressure-low.png";
         }
 
         public static final class SVGCode {
@@ -86,8 +91,8 @@ public final class JFXDefs {
     }
 
     public static final class SVGColor {
-        public static final String NORMAL_COLOR = "";
-        public static final String RESERVE_COLOR = "";
+        public static final String NORMAL_COLOR = "#111111";
+        public static final String WARNING_COLOR = "#FF0000";
     }
 
 }

@@ -16,12 +16,13 @@ import java.util.ResourceBundle;
 
 public final class ControllerSceneCentralinaGraphs implements Initializable {
 
-    private static final DecimalFormat velocityFormatter = new DecimalFormat("#.##");
-
     // Graphics Components
     @FXML private GridPane gridPaneGraphContainer;
     private LineChart<Number, Number> distanceChart = null;
     private LineChart<Number, Number> velocityChart = null;
+    private LineChart<Number, Number> temperatureChart = null;
+    private LineChart<Number, Number> humidityChart = null;
+    private LineChart<Number, Number> pressureChart = null;
 
     // Initialize
     @Override
@@ -29,41 +30,86 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         NumberAxis xDistanceAxis = new NumberAxis();
         xDistanceAxis.setLabel("Tempo");
         NumberAxis yDistanceAxis = new NumberAxis();
-        yDistanceAxis.setLabel("Distanza");
+        yDistanceAxis.setLabel("Distanza [mm]");
         distanceChart = new LineChart<>(xDistanceAxis, yDistanceAxis);
-        distanceChart.setTitle("Distanza nel Tempo");
+        distanceChart.setTitle("Prossimità ad oggetti");
         distanceChart.setAnimated(false);
         distanceChart.getData().clear();
 
         NumberAxis xVelocityAxis = new NumberAxis();
         xVelocityAxis.setLabel("Tempo");
         NumberAxis yVelocityAxis = new NumberAxis();
-        yVelocityAxis.setLabel("Velocità");
+        yVelocityAxis.setLabel("Velocità [mm/s]");
         velocityChart = new LineChart<>(xVelocityAxis, yVelocityAxis);
         velocityChart.setTitle("Velocità nel Tempo");
         velocityChart.setAnimated(false);
         velocityChart.getData().clear();
 
-        gridPaneGraphContainer.add(distanceChart, 0, 1);
-        gridPaneGraphContainer.add(velocityChart, 1, 1);
+        NumberAxis xTemperatureAxis = new NumberAxis();
+        xTemperatureAxis.setLabel("Tempo");
+        NumberAxis yTemperatureAxis = new NumberAxis();
+        yTemperatureAxis.setLabel("Temperatura [°C]");
+        temperatureChart = new LineChart<>(xTemperatureAxis, yTemperatureAxis);
+        temperatureChart.setTitle("Temperatura nel Tempo");
+        temperatureChart.setAnimated(false);
+        temperatureChart.getData().clear();
+
+        NumberAxis xHumidityAxis = new NumberAxis();
+        xHumidityAxis.setLabel("Tempo");
+        NumberAxis yHumidityAxis = new NumberAxis();
+        yHumidityAxis.setLabel("%Humidity");
+        humidityChart = new LineChart<>(xHumidityAxis, yHumidityAxis);
+        humidityChart.setTitle("% Umidità nel Tempo");
+        humidityChart.setAnimated(false);
+        humidityChart.getData().clear();
+
+        NumberAxis xPressureAxis = new NumberAxis();
+        xPressureAxis.setLabel("Tempo");
+        NumberAxis yPressureAxis = new NumberAxis();
+        yPressureAxis.setLabel("Pressione [hPa]");
+        pressureChart = new LineChart<>(xPressureAxis, yPressureAxis);
+        pressureChart.setTitle("Pressione nel Tempo");
+        pressureChart.setAnimated(false);
+        pressureChart.getData().clear();
+
+        gridPaneGraphContainer.add(distanceChart, 0, 0);
+        gridPaneGraphContainer.add(velocityChart, 0, 1);
+        gridPaneGraphContainer.add(temperatureChart, 1, 0);
+        gridPaneGraphContainer.add(humidityChart, 1, 1);
+        gridPaneGraphContainer.add(pressureChart, 2, 0);
     }
 
     // EDT
-    @FXML
-    public void updateDistanceChart(@NotNull IntArrayPile distancePile){
-        if (distanceChart == null) return;
-        distanceChart.getData().clear();
+    /*@FXML
+    public void updateDistanceChart(@NotNull IntArrayPile distancePile, @NotNull DoubleArrayPile timePile){
+        if (this.distanceChart == null) return;
+        this.distanceChart.getData().clear();
         int[] values = distancePile.getElements();
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<values.length; i++) {
             series.getData().add(new XYChart.Data<>(i, values[i]));
         }
-        distanceChart.getData().add(series);
-    }
+        this.distanceChart.getData().add(series);
+    }*/
     @FXML
-    public void updateVelocityChart(@NotNull DoubleArrayPile velocityPile){
-        if (velocityChart == null) return;
-        velocityChart.getData().clear();
+    public void updateDistanceChart(@NotNull IntArrayPile distancePile, @NotNull DoubleArrayPile timePile){
+        if (this.distanceChart == null) return;
+        this.distanceChart.getData().clear();
+        int[] distanceValues = distancePile.getElements();
+        //double[] timeValues = timePile.getElements();
+        //if (distanceValues.length != timeValues.length) return;
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        for (int i=0; i<distanceValues.length; i++) {
+            //series.getData().add(new XYChart.Data<>(timeValues[i], distanceValues[i]));
+            series.getData().add(new XYChart.Data<>(i, distanceValues[i]));
+        }
+        this.distanceChart.getData().add(series);
+    }
+
+    @FXML
+    public void updateVelocityChart(@NotNull DoubleArrayPile velocityPile, @NotNull DoubleArrayPile timePile){
+        if (this.velocityChart == null) return;
+        this.velocityChart.getData().clear();
         double[] values = velocityPile.getElements();
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<values.length; i++) {
@@ -73,6 +119,45 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
             value = (double) Math.round(value * 100) /100;
             series.getData().add(new XYChart.Data<>(i, value));
         }
-        velocityChart.getData().add(series);
+        this.velocityChart.getData().add(series);
+    }
+
+    @FXML
+    public void updateTemperatureChart(@NotNull IntArrayPile temperaturePile, @NotNull DoubleArrayPile timePile){
+        if (this.temperatureChart == null) return;
+        this.temperatureChart.getData().clear();
+        int[] values = temperaturePile.getElements();
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        for (int i=0; i<values.length; i++) {
+            //System.out.println("Value: " + value);
+            series.getData().add(new XYChart.Data<>(i, values[i]));
+        }
+        this.temperatureChart.getData().add(series);
+    }
+
+    @FXML
+    public void updateHumidityChart(@NotNull IntArrayPile humidityPile, @NotNull DoubleArrayPile timePile){
+        if (this.humidityChart == null) return;
+        this.humidityChart.getData().clear();
+        int[] values = humidityPile.getElements();
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        for (int i=0; i<values.length; i++) {
+            //System.out.println("Value: " + value);
+            series.getData().add(new XYChart.Data<>(i, values[i]));
+        }
+        this.humidityChart.getData().add(series);
+    }
+
+    @FXML
+    public void updatePressureChart(@NotNull IntArrayPile pressurePile, @NotNull DoubleArrayPile timePile){
+        if (this.pressureChart == null) return;
+        this.pressureChart.getData().clear();
+        int[] values = pressurePile.getElements();
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        for (int i=0; i<values.length; i++) {
+            //System.out.println("Value: " + value);
+            series.getData().add(new XYChart.Data<>(i, values[i]));
+        }
+        this.pressureChart.getData().add(series);
     }
 }

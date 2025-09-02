@@ -8,6 +8,7 @@ import it.italiandudes.jamazing_centralina.javafx.scene.centralina.SceneCentrali
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import org.controlsfx.control.ToggleSwitch;
 
 public final class ControllerSceneCentralina {
@@ -21,6 +22,7 @@ public final class ControllerSceneCentralina {
     @FXML private Label labelSimulation;
     @FXML private Label labelGraph;
     @FXML private GridPane gp_main_centralina_pane;
+    @FXML private StackPane sp_placeholder_pane;
     private ToggleSwitch toggleSwitchChangeMode;
 
     // Initialize
@@ -30,17 +32,13 @@ public final class ControllerSceneCentralina {
         sceneControllerCentralinaGraph = SceneCentralinaGraphs.getScene();
         JFXDefs.startServiceTask(JAMazingCentralina::startSerialReader);
 
-        gp_main_centralina_pane.add(sceneControllerCentralinaSimulation.getParent(),0,0);
         toggleSwitchChangeMode = new ToggleSwitch();
+        gp_main_centralina_pane.add(sceneControllerCentralinaSimulation.getParent(), 0, 0);
         toggleSwitchChangeMode.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                gp_main_centralina_pane.add(sceneControllerCentralinaGraph.getParent(),0,0);
-                labelSimulation.setStyle("");
-                labelGraph.setStyle("-fx-font-weight: bold;");
+                sp_placeholder_pane.getChildren().setAll(sceneControllerCentralinaGraph.getParent());
             } else {
-                gp_main_centralina_pane.add(sceneControllerCentralinaSimulation.getParent(),0,0);
-                labelSimulation.setStyle("-fx-font-weight: bold;");
-                labelGraph.setStyle("");
+                sp_placeholder_pane.getChildren().setAll(sceneControllerCentralinaSimulation.getParent());
             }
         });
         toggleSwitchChangeMode.setMinWidth(ToggleSwitch.USE_COMPUTED_SIZE);
