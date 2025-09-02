@@ -1,6 +1,7 @@
 package it.italiandudes.jamazing_centralina.javafx.controllers.centralina;
 
 import it.italiandudes.jamazing_centralina.javafx.JFXDefs;
+import it.italiandudes.jamazing_centralina.javafx.sfx.SFXManager;
 import it.italiandudes.jamazing_centralina.utils.models.Simulation;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -50,6 +51,10 @@ public final class ControllerSceneCentralinaSimulation implements Initializable 
         lbl_proximity_warning.setTextFill(Paint.valueOf(JFXDefs.SVGColor.NORMAL_COLOR));
         lbl_proximity_warning.setVisible(false);
 
+        imgv_gas_tank.imageProperty().addListener(observableValue -> {
+            if (centralinaSim.isReserveOn()) SFXManager.playWarningSFX(); // Single Warning
+        });
+
         btn_onoff.setText("AVVIA\nSPEGNI");
     }
 
@@ -60,6 +65,8 @@ public final class ControllerSceneCentralinaSimulation implements Initializable 
     @FXML
     public void onoff_pressed() {
         centralinaSim.setEngine();
+        if (centralinaSim.isEngineOn()) SFXManager.playEngineStartupSFX();
+        else SFXManager.stopWarningLoopSFX();
     }
 
     @FXML
@@ -79,6 +86,9 @@ public final class ControllerSceneCentralinaSimulation implements Initializable 
             this.imgv_tire_low.setVisible(centralinaSim.isTireLow());
             this.lbl_proximity_warning.setVisible(centralinaSim.isProximity());
             this.lbl_slope_assistance_warning.setVisible(centralinaSim.isTerrainSlope());
+
+            if (centralinaSim.isProximity()) SFXManager.playWarningLoopSFX(); // Play Warning Loop
+            else SFXManager.stopWarningLoopSFX(); // Stop Warning Loop
 
             this.lbl_speed_counter.setText(String.valueOf(centralinaSim.getVelocity()));
         }else{
