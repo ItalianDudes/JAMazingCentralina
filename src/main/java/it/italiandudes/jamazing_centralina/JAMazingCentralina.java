@@ -1,7 +1,9 @@
 package it.italiandudes.jamazing_centralina;
 
 import com.fazecast.jSerialComm.SerialPort;
+import it.italiandudes.idl.common.InfoFlags;
 import it.italiandudes.idl.common.JarHandler;
+import it.italiandudes.idl.common.Logger;
 import it.italiandudes.idl.common.TargetPlatform;
 import it.italiandudes.jamazing_centralina.javafx.Client;
 import it.italiandudes.jamazing_centralina.javafx.JFXDefs;
@@ -9,8 +11,6 @@ import it.italiandudes.jamazing_centralina.javafx.controllers.ControllerSceneCen
 import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaGraphs;
 import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaSimulation;
 import it.italiandudes.jamazing_centralina.utils.Defs;
-import it.italiandudes.idl.common.InfoFlags;
-import it.italiandudes.idl.common.Logger;
 import it.italiandudes.jamazing_centralina.utils.models.LoadedDataHandler;
 import it.italiandudes.jamazing_centralina.utils.models.ParsedSerialData;
 import it.italiandudes.jamazing_centralina.utils.models.Simulation;

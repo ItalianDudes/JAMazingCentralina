@@ -1,13 +1,13 @@
 package it.italiandudes.jamazing_centralina.javafx.controllers;
 
 import com.sun.javafx.application.HostServicesDelegate;
+import it.italiandudes.idl.common.Logger;
 import it.italiandudes.jamazing_centralina.javafx.Client;
 import it.italiandudes.jamazing_centralina.javafx.JFXDefs;
 import it.italiandudes.jamazing_centralina.javafx.alerts.ErrorAlert;
 import it.italiandudes.jamazing_centralina.javafx.alerts.YesNoAlert;
 import it.italiandudes.jamazing_centralina.javafx.scene.SceneCentralina;
 import it.italiandudes.jamazing_centralina.javafx.scene.SceneSettingsEditor;
-import it.italiandudes.idl.common.Logger;
 import it.italiandudes.jamazing_centralina.utils.Defs;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;

@@ -1,5 +1,6 @@
 package it.italiandudes.jamazing_centralina.javafx;
 
+import it.italiandudes.idl.common.Logger;
 import it.italiandudes.jamazing_centralina.JAMazingCentralina;
 import it.italiandudes.jamazing_centralina.javafx.alerts.ErrorAlert;
 import it.italiandudes.jamazing_centralina.javafx.components.SceneController;
@@ -8,7 +9,6 @@ import it.italiandudes.jamazing_centralina.javafx.scene.SceneMainMenu;
 import it.italiandudes.jamazing_centralina.javafx.utils.Settings;
 import it.italiandudes.jamazing_centralina.javafx.utils.ThemeHandler;
 import it.italiandudes.jamazing_centralina.utils.Defs;
-import it.italiandudes.idl.common.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;

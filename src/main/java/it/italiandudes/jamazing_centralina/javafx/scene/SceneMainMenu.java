@@ -1,11 +1,11 @@
 package it.italiandudes.jamazing_centralina.javafx.scene;
 
+import it.italiandudes.idl.common.Logger;
 import it.italiandudes.jamazing_centralina.javafx.Client;
 import it.italiandudes.jamazing_centralina.javafx.JFXDefs;
 import it.italiandudes.jamazing_centralina.javafx.components.SceneController;
 import it.italiandudes.jamazing_centralina.javafx.controllers.ControllerSceneMainMenu;
 import it.italiandudes.jamazing_centralina.utils.Defs;
-import it.italiandudes.idl.common.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import org.jetbrains.annotations.NotNull;

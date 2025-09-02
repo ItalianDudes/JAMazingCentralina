@@ -1,5 +1,6 @@
 package it.italiandudes.jamazing_centralina.javafx.controllers;
 
+import it.italiandudes.idl.common.Logger;
 import it.italiandudes.jamazing_centralina.javafx.Client;
 import it.italiandudes.jamazing_centralina.javafx.JFXDefs;
 import it.italiandudes.jamazing_centralina.javafx.alerts.ErrorAlert;
@@ -8,7 +9,6 @@ import it.italiandudes.jamazing_centralina.javafx.scene.SceneMainMenu;
 import it.italiandudes.jamazing_centralina.javafx.utils.Settings;
 import it.italiandudes.jamazing_centralina.javafx.utils.ThemeHandler;
 import it.italiandudes.jamazing_centralina.utils.Defs;
-import it.italiandudes.idl.common.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
