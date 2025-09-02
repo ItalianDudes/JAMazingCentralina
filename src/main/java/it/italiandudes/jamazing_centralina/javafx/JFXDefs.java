@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("unused")
 public final class JFXDefs {
 
     // Service Starter
@@ -16,7 +15,7 @@ public final class JFXDefs {
         new Service<Void>() {
             @Override
             protected Task<Void> createTask() {
-                return new Task<Void>() {
+                return new Task<>() {
                     @Override
                     protected Void call() {
                         runnable.run();
@@ -53,7 +52,7 @@ public final class JFXDefs {
             public static final class Centralina {
                 private static final String CENTRALINA_DIR = FXML_DIR + "centralina/";
                 public static final String CENTRALINA_SIMULATION = CENTRALINA_DIR + "SceneCentralinaSimulation.fxml";
-                public static final String CENTRALINA_GRAPH = CENTRALINA_DIR + "SceneCentralinaGraph.fxml";
+                public static final String CENTRALINA_GRAPHS = CENTRALINA_DIR + "SceneCentralinaGraphs.fxml";
             }
         }
 
@@ -74,11 +73,18 @@ public final class JFXDefs {
         public static final class Image {
             private static final String IMAGE_DIR = Defs.Resources.PROJECT_RESOURCES_ROOT + "image/";
             public static final String APP_LOGO = IMAGE_DIR + "app-logo.png";
-            public static final String IMAGE_FILE_EXPLORER = IMAGE_DIR+"file-explorer.png";
-            public static final String IMAGE_PLAY = IMAGE_DIR + "play.png";
-            public static final String IMAGE_STOP = IMAGE_DIR + "stop.png";
+            public static final String IMAGE_CAR_PARKED = IMAGE_DIR + "car-parked.png";
+            public static final String IMAGE_ENGINE_TEMP_TOO_HIGH = IMAGE_DIR + "engine-coolant-temp-too-high.png";
+            public static final String IMAGE_GAS_TANK_NORMAL = IMAGE_DIR + "gas-tank-normal.png";
+            public static final String IMAGE_GAS_TANK_RESERVE = IMAGE_DIR + "gas-tank-reserve.png";
+            public static final String IMAGE_TIRE_PRESSURE_LOW = IMAGE_DIR + "tire-pressure-low.png";
         }
 
+    }
+
+    public static final class SVGColor {
+        public static final String NORMAL_COLOR = "#111111";
+        public static final String WARNING_COLOR = "#FF0000";
     }
 
 }

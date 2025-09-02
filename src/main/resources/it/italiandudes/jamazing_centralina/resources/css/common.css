@@ -1,5 +1,6 @@
 .root {
     -fx-font-family: "Lucida Sans";
+    -fx-focus-color: transparent;
 }
 
 .spinner {
@@ -16,4 +17,32 @@
 
 .list-view {
     -fx-focus-traversable: false;
+}
+
+#btn_onoff {
+    -fx-text-fill: #FFF;
+    -fx-background-color: #111;
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+    -fx-padding: 10px;
+}
+
+#velocity_meter {
+    -fx-text-fill: #FFF;
+    -fx-background-color: #111;
+    -fx-padding: 30px;
+}
+
+#gasoline_bar track {
+    -fx-background-radius: 0%;
+    -fx-border-radius: 0%;
+    -fx-padding: 0px;
+    -fx-background-color: #F00;
+}
+
+#gasoline_bar {
+    -fx-accent: red;
+}
+
+.toggle-switch {
 }

@@ -1,21 +1,32 @@
 package it.italiandudes.jamazing_centralina;
 
+import com.fazecast.jSerialComm.SerialPort;
+import it.italiandudes.idl.common.InfoFlags;
 import it.italiandudes.idl.common.JarHandler;
+import it.italiandudes.idl.common.Logger;
 import it.italiandudes.idl.common.TargetPlatform;
 import it.italiandudes.jamazing_centralina.javafx.Client;
+import it.italiandudes.jamazing_centralina.javafx.JFXDefs;
+import it.italiandudes.jamazing_centralina.javafx.controllers.ControllerSceneCentralina;
+import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaGraphs;
+import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaSimulation;
 import it.italiandudes.jamazing_centralina.utils.Defs;
-import it.italiandudes.idl.common.InfoFlags;
-import it.italiandudes.idl.common.Logger;
+import it.italiandudes.jamazing_centralina.utils.models.LoadedDataHandler;
+import it.italiandudes.jamazing_centralina.utils.models.ParsedSerialData;
+import it.italiandudes.jamazing_centralina.utils.models.Simulation;
 import javafx.application.Platform;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.jar.Attributes;
 
 public final class JAMazingCentralina {
+    private static boolean threadStop = false;
+    private static boolean isSerialOpen = false;
 
     // Main Method
     public static void main(String[] args) {
@@ -92,6 +103,90 @@ public final class JAMazingCentralina {
             Logger.close();
             System.exit(-1);
         }
+
+        Logger.log("Starting serial thread...");
+        try{
+            startSerialReader();
+            Logger.log("Serial thread started successfully");
+        } catch (RuntimeException e){
+            Logger.log(e, new InfoFlags(true, true, true, true));
+            Logger.close();
+            System.exit(-1);
+        }
+    }
+
+    public static void startSerialReader() {
+        if (isSerialOpen) return;
+        isSerialOpen = true;
+        SerialPort comPort = SerialPort.getCommPort("COM6"); // cambia porta se necessario (es. /dev/ttyUSB0 su Linux)
+        comPort.setBaudRate(9600);
+        comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 0, 0);
+
+        if (!comPort.openPort()) {
+            System.out.println();
+            throw new RuntimeException("Unable to open the serial port. Selected port:\n" + comPort);
+        }
+
+        Thread serialThread = new Thread(() -> {
+            try (InputStream in = comPort.getInputStream()) {
+                ParsedSerialData parsedSerialData = new ParsedSerialData();
+                LoadedDataHandler loadedDataHandler = new LoadedDataHandler();
+                Simulation sim = new Simulation(loadedDataHandler);
+                Object controller = Client.getScene().controller();
+                if (!(controller instanceof ControllerSceneCentralina controllerSceneCentralina)) return;
+                ControllerSceneCentralinaSimulation simController = (ControllerSceneCentralinaSimulation) controllerSceneCentralina.getSceneControllerCentralinaSimulation().controller();
+                simController.setCentralinaSim(sim);
+                ControllerSceneCentralinaGraphs graphsController = (ControllerSceneCentralinaGraphs) controllerSceneCentralina.getSceneControllerCentralinaGraph().controller();
+                StringBuilder buffer = new StringBuilder();
+                boolean firstLine = true;
+                int data;
+                while (!threadStop && (data = in.read()) != -1) {
+                    try{
+                        char ch = (char) data;
+                        if (ch == '\n') {
+                            String line = buffer.toString().trim();
+                            buffer.setLength(0);
+                            //System.out.println(line);
+                            parsedSerialData.parseData(line);
+
+                            if(firstLine){
+                                loadedDataHandler.initData(parsedSerialData, Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE,
+                                        Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE,
+                                        Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE, 0.98);
+                                firstLine = false;
+                            }else{
+                                loadedDataHandler.updateData(parsedSerialData);
+                            }
+
+                            sim.runSimCycle();
+
+                            Platform.runLater(() -> {
+                                simController.updateSimulation();
+                                graphsController.updateDistanceChart(loadedDataHandler.getDistanceDataBatch(), loadedDataHandler.getTimeDataBatch());
+                                graphsController.updateVelocityChart(loadedDataHandler.getVelocityDataBatch(), loadedDataHandler.getTimeDataBatch());
+                                graphsController.updateTemperatureChart(loadedDataHandler.getTemperatureDataBatch(), loadedDataHandler.getTimeDataBatch());
+                                graphsController.updateHumidityChart(loadedDataHandler.getHumidityDataBatch(), loadedDataHandler.getTimeDataBatch());
+                                graphsController.updatePressureChart(loadedDataHandler.getPressureDataBatch(), loadedDataHandler.getTimeDataBatch());
+                            });
+
+                            //Platform.runLater(() -> outputArea.appendText(line + "\n"));
+                        } else {
+                            buffer.append(ch);
+                        }
+
+                    }catch (Exception e){
+                        Logger.log("Discarded serial string because of unreadable data caused by an error in the communication", new InfoFlags(true, true, false,true));
+                    }
+                }
+            } catch (Exception e) {
+                Logger.log(e);
+            } finally {
+                comPort.closePort();
+            }
+        });
+
+        serialThread.setDaemon(true);
+        JFXDefs.startServiceTask(serialThread);
     }
 
     // Exit Methods
@@ -104,6 +199,7 @@ public final class JAMazingCentralina {
         } else {
             Logger.log("Exit Method Called, exiting JAMazingCentralina...", Defs.LOGGER_CONTEXT);
         }
+        threadStop = true;
         Platform.runLater(() -> Client.getStage().hide());
         Logger.close();
         Platform.exit();

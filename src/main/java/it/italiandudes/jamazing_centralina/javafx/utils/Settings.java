@@ -1,9 +1,9 @@
 package it.italiandudes.jamazing_centralina.javafx.utils;
 
-import it.italiandudes.jamazing_centralina.utils.Defs;
 import it.italiandudes.idl.common.JSONManager;
 import it.italiandudes.idl.common.JarHandler;
 import it.italiandudes.idl.common.Logger;
+import it.italiandudes.jamazing_centralina.utils.Defs;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
