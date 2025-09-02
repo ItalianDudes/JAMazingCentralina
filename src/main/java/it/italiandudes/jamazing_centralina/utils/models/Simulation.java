@@ -1,9 +1,16 @@
 package it.italiandudes.jamazing_centralina.utils.models;
 
 public class Simulation {
-    private final double FUEL_MM_CONSUMPTION = 0.044 * Math.pow(10, -6); //Fuel liters consumed per mm
-    private final double FUEL_TANK_CAPACITY = 56.0; //Fuel liters the car's tank can contain.
+
+    // Constants
+    private final double FUEL_MM_CONSUMPTION = 0.044 * Math.pow(10, -6); // Fuel liters consumed per mm
+    private final double FUEL_TANK_CAPACITY = 56.0; // Fuel liters the car's tank can contain.
     private final int TEMPERATURE_THRESHOLD = 30;
+    private final double TIRE_LOW_THRESHOLD = 1000.0;
+    private final double ABS_TERRAIN_SLOPE_THRESHOLD = 15.0;
+    private final double MIN_FUEL_QUANTITY = 0.0;
+    private final double FUEL_RESERVE_THRESHOLD = 0.15;
+    private final int PROXIMITY_THRESHOLD = 20;
 
     private final LoadedDataHandler dataHandler;
 
@@ -53,23 +60,23 @@ public class Simulation {
                 }
 
                 this.fuelQuantity -= FUEL_MM_CONSUMPTION * this.velocity;
-                if(this.fuelQuantity < 0.0) {
-                    this.fuelQuantity = 0.0;
+                if(this.fuelQuantity < MIN_FUEL_QUANTITY) {
+                    this.fuelQuantity = MIN_FUEL_QUANTITY;
                     this.isTankEmpty = true;
                 }
 
                 this.fuelPercentage = this.fuelQuantity/FUEL_TANK_CAPACITY;
-                if (this.fuelPercentage <= 0.15) this.isReserveOn = true;
+                if (this.fuelPercentage <= FUEL_RESERVE_THRESHOLD) this.isReserveOn = true;
 
                 this.isEngineTempTooHigh = this.dataHandler.getTemperatureDataBatch().getLastElement() > TEMPERATURE_THRESHOLD;
 
-                this.isTerrainSlope = (this.dataHandler.getDegreeRateBatch().getLastElement() > 15.0 || this.dataHandler.getDegreeRateBatch().getLastElement() < -15.0);
+                this.isTerrainSlope = (this.dataHandler.getDegreeRateBatch().getLastElement() > ABS_TERRAIN_SLOPE_THRESHOLD || this.dataHandler.getDegreeRateBatch().getLastElement() < -ABS_TERRAIN_SLOPE_THRESHOLD);
 
-                this.isTireLow = this.dataHandler.getPressureDataBatch().getLastElement() <1000.0;
+                this.isTireLow = this.dataHandler.getPressureDataBatch().getLastElement() < TIRE_LOW_THRESHOLD;
 
                 this.pastVelocity = this.velocity;
 
-                this.isProximity = this.dataHandler.getDistanceDataBatch().getLastElement() > 0 && this.dataHandler.getDistanceDataBatch().getLastElement() < 20;
+                this.isProximity = this.dataHandler.getDistanceDataBatch().getLastElement() > 0 && this.dataHandler.getDistanceDataBatch().getLastElement() < PROXIMITY_THRESHOLD;
             }
         }
         //System.out.println(this);

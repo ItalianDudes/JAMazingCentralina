@@ -40,5 +40,9 @@
     -fx-background-color: #F00;
 }
 
+#gasoline_bar {
+    -fx-accent: red;
+}
+
 .toggle-switch {
 }

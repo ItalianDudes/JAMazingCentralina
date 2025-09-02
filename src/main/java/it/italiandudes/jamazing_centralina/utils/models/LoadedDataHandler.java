@@ -47,7 +47,7 @@ public final class LoadedDataHandler {
         this.timeDataCounter = 0.0;
         this.filteredPitch = 0.0;
 
-        distanceDataBatch.addElement(parsedSerialData.getDistance());
+        distanceDataBatch.addElement(parsedSerialData.getDistance() > 8000 ? 0 : parsedSerialData.getDistance());
         humidityDataBatch.addElement(parsedSerialData.getHumidity());
         temperatureDataBatch.addElement(parsedSerialData.getTemperature());
         pressureDataBatch.addElement(parsedSerialData.getPressure());
@@ -70,7 +70,7 @@ public final class LoadedDataHandler {
         this.actualDt = getActualDt(parsedSerialData.getTimePeriod());
         this.timeDataCounter += this.actualDt;
 
-        distanceDataBatch.addElement(parsedSerialData.getDistance());
+        distanceDataBatch.addElement(parsedSerialData.getDistance() > 8000 ? 0 : parsedSerialData.getDistance());
         humidityDataBatch.addElement(parsedSerialData.getHumidity());
         temperatureDataBatch.addElement(parsedSerialData.getTemperature());
         pressureDataBatch.addElement(parsedSerialData.getPressure());

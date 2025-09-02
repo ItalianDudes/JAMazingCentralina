@@ -28,7 +28,9 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
         NumberAxis xDistanceAxis = new NumberAxis();
-        xDistanceAxis.setLabel("Tempo");
+        xDistanceAxis.setLabel("Tempo [s]");
+        xDistanceAxis.setTickUnit(100);
+        xDistanceAxis.setForceZeroInRange(false);
         NumberAxis yDistanceAxis = new NumberAxis();
         yDistanceAxis.setLabel("Distanza [mm]");
         distanceChart = new LineChart<>(xDistanceAxis, yDistanceAxis);
@@ -37,7 +39,9 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         distanceChart.getData().clear();
 
         NumberAxis xVelocityAxis = new NumberAxis();
-        xVelocityAxis.setLabel("Tempo");
+        xVelocityAxis.setLabel("Tempo [s]");
+        xVelocityAxis.setTickUnit(100);
+        xVelocityAxis.setForceZeroInRange(false);
         NumberAxis yVelocityAxis = new NumberAxis();
         yVelocityAxis.setLabel("Velocità [mm/s]");
         velocityChart = new LineChart<>(xVelocityAxis, yVelocityAxis);
@@ -46,7 +50,9 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         velocityChart.getData().clear();
 
         NumberAxis xTemperatureAxis = new NumberAxis();
-        xTemperatureAxis.setLabel("Tempo");
+        xTemperatureAxis.setLabel("Tempo [s]");
+        xTemperatureAxis.setTickUnit(100);
+        xTemperatureAxis.setForceZeroInRange(false);
         NumberAxis yTemperatureAxis = new NumberAxis();
         yTemperatureAxis.setLabel("Temperatura [°C]");
         temperatureChart = new LineChart<>(xTemperatureAxis, yTemperatureAxis);
@@ -55,7 +61,9 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         temperatureChart.getData().clear();
 
         NumberAxis xHumidityAxis = new NumberAxis();
-        xHumidityAxis.setLabel("Tempo");
+        xHumidityAxis.setLabel("Tempo [s]");
+        xHumidityAxis.setTickUnit(100);
+        xHumidityAxis.setForceZeroInRange(false);
         NumberAxis yHumidityAxis = new NumberAxis();
         yHumidityAxis.setLabel("%Humidity");
         humidityChart = new LineChart<>(xHumidityAxis, yHumidityAxis);
@@ -64,7 +72,9 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         humidityChart.getData().clear();
 
         NumberAxis xPressureAxis = new NumberAxis();
-        xPressureAxis.setLabel("Tempo");
+        xPressureAxis.setLabel("Tempo [s]");
+        xPressureAxis.setTickUnit(100);
+        xPressureAxis.setForceZeroInRange(false);
         NumberAxis yPressureAxis = new NumberAxis();
         yPressureAxis.setLabel("Pressione [hPa]");
         pressureChart = new LineChart<>(xPressureAxis, yPressureAxis);
@@ -96,8 +106,8 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         if (this.distanceChart == null) return;
         this.distanceChart.getData().clear();
         int[] distanceValues = distancePile.getElements();
-        //double[] timeValues = timePile.getElements();
-        //if (distanceValues.length != timeValues.length) return;
+        double[] timeValues = timePile.getElements();
+        // if (distanceValues.length != timeValues.length) return;
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<timeValues.length; i++) {
             series.getData().add(new XYChart.Data<>(timeValues[i], distanceValues[i]));
@@ -112,13 +122,15 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         if (this.velocityChart == null) return;
         this.velocityChart.getData().clear();
         double[] values = velocityPile.getElements();
+        double[] timeValues = timePile.getElements();
+        if (values.length != timeValues.length) return;
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<values.length; i++) {
             double value = values[i];
             if (value == Double.NEGATIVE_INFINITY || value == Double.POSITIVE_INFINITY) value = 0;
             //System.out.println("Value: " + value);
             value = (double) Math.round(value * 100) /100;
-            series.getData().add(new XYChart.Data<>(i, value));
+            series.getData().add(new XYChart.Data<>(timeValues[i], value));
         }
         this.velocityChart.getData().add(series);
     }
@@ -128,10 +140,12 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         if (this.temperatureChart == null) return;
         this.temperatureChart.getData().clear();
         int[] values = temperaturePile.getElements();
+        double[] timeValues = timePile.getElements();
+        if (values.length != timeValues.length) return;
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<values.length; i++) {
             //System.out.println("Value: " + value);
-            series.getData().add(new XYChart.Data<>(i, values[i]));
+            series.getData().add(new XYChart.Data<>(timeValues[i], values[i]));
         }
         this.temperatureChart.getData().add(series);
     }
@@ -141,10 +155,12 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         if (this.humidityChart == null) return;
         this.humidityChart.getData().clear();
         int[] values = humidityPile.getElements();
+        double[] timeValues = timePile.getElements();
+        if (values.length != timeValues.length) return;
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<values.length; i++) {
             //System.out.println("Value: " + value);
-            series.getData().add(new XYChart.Data<>(i, values[i]));
+            series.getData().add(new XYChart.Data<>(timeValues[i], values[i]));
         }
         this.humidityChart.getData().add(series);
     }
@@ -154,10 +170,12 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         if (this.pressureChart == null) return;
         this.pressureChart.getData().clear();
         int[] values = pressurePile.getElements();
+        double[] timeValues = timePile.getElements();
+        if (values.length != timeValues.length) return;
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<values.length; i++) {
             //System.out.println("Value: " + value);
-            series.getData().add(new XYChart.Data<>(i, values[i]));
+            series.getData().add(new XYChart.Data<>(timeValues[i], values[i]));
         }
         this.pressureChart.getData().add(series);
     }
