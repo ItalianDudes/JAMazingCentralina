@@ -9,39 +9,42 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
 <ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.jamazing_centralina.javafx.controllers.ControllerSceneCentralina">
    <content>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0">
          <children>
-            <GridPane fx:id="gp_main_centralina_pane" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <GridPane layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
                   <RowConstraints valignment="CENTER" vgrow="NEVER" />
                </rowConstraints>
                <children>
+                  <AnchorPane fx:id="ap_placeholder_pane" style="-fx-border-color: black; -fx-border-radius: 4px; -fx-border-width: 2px;" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                   <GridPane fx:id="gridPaneSwitchContainer" alignment="CENTER" GridPane.rowIndex="1">
                     <columnConstraints>
-                      <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                      <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
                         <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
-                      <ColumnConstraints halignment="LEFT" hgrow="NEVER" />
+                      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints valignment="CENTER" vgrow="NEVER" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="labelSimulation" style="-fx-font-weight: bold;" text="Simulazione" />
-                        <Label fx:id="labelGraph" text="Grafici" GridPane.columnIndex="2" />
+                        <Label style="-fx-font-weight: bold;" text="Simulazione" />
+                        <Label text="Grafici" GridPane.columnIndex="2">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                      </children>
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </GridPane>
-                  <StackPane fx:id="sp_placeholder_pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
                </children>
             </GridPane>
          </children>

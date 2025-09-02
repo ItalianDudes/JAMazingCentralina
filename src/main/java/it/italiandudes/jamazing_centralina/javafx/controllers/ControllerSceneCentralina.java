@@ -6,9 +6,8 @@ import it.italiandudes.jamazing_centralina.javafx.components.SceneController;
 import it.italiandudes.jamazing_centralina.javafx.scene.centralina.SceneCentralinaGraphs;
 import it.italiandudes.jamazing_centralina.javafx.scene.centralina.SceneCentralinaSimulation;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import org.controlsfx.control.ToggleSwitch;
 
 public final class ControllerSceneCentralina {
@@ -19,11 +18,7 @@ public final class ControllerSceneCentralina {
 
     // Graphic Elements
     @FXML private GridPane gridPaneSwitchContainer;
-    @FXML private Label labelSimulation;
-    @FXML private Label labelGraph;
-    @FXML private GridPane gp_main_centralina_pane;
-    @FXML private StackPane sp_placeholder_pane;
-    private ToggleSwitch toggleSwitchChangeMode;
+    @FXML private AnchorPane ap_placeholder_pane;
 
     // Initialize
     @FXML
@@ -32,13 +27,33 @@ public final class ControllerSceneCentralina {
         sceneControllerCentralinaGraph = SceneCentralinaGraphs.getScene();
         JFXDefs.startServiceTask(JAMazingCentralina::startSerialReader);
 
-        toggleSwitchChangeMode = new ToggleSwitch();
-        gp_main_centralina_pane.add(sceneControllerCentralinaSimulation.getParent(), 0, 0);
+        ToggleSwitch toggleSwitchChangeMode = new ToggleSwitch();
+        toggleSwitchChangeMode.setMinWidth(ToggleSwitch.USE_COMPUTED_SIZE);
+        toggleSwitchChangeMode.setMinHeight(ToggleSwitch.USE_COMPUTED_SIZE);
+        toggleSwitchChangeMode.setPrefWidth(ToggleSwitch.USE_COMPUTED_SIZE);
+        toggleSwitchChangeMode.setPrefHeight(ToggleSwitch.USE_COMPUTED_SIZE);
+        toggleSwitchChangeMode.setMaxWidth(ToggleSwitch.USE_COMPUTED_SIZE);
+        toggleSwitchChangeMode.setMaxHeight(ToggleSwitch.USE_COMPUTED_SIZE);
+
+        ap_placeholder_pane.getChildren().setAll(sceneControllerCentralinaSimulation.getParent());
+        AnchorPane.setTopAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
+        AnchorPane.setLeftAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
+        AnchorPane.setBottomAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
+        AnchorPane.setRightAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
+
         toggleSwitchChangeMode.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                sp_placeholder_pane.getChildren().setAll(sceneControllerCentralinaGraph.getParent());
+                ap_placeholder_pane.getChildren().setAll(sceneControllerCentralinaGraph.getParent());
+                AnchorPane.setTopAnchor(sceneControllerCentralinaGraph.getParent(), 0.0);
+                AnchorPane.setLeftAnchor(sceneControllerCentralinaGraph.getParent(), 0.0);
+                AnchorPane.setBottomAnchor(sceneControllerCentralinaGraph.getParent(), 0.0);
+                AnchorPane.setRightAnchor(sceneControllerCentralinaGraph.getParent(), 0.0);
             } else {
-                sp_placeholder_pane.getChildren().setAll(sceneControllerCentralinaSimulation.getParent());
+                ap_placeholder_pane.getChildren().setAll(sceneControllerCentralinaSimulation.getParent());
+                AnchorPane.setTopAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
+                AnchorPane.setLeftAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
+                AnchorPane.setBottomAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
+                AnchorPane.setRightAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
             }
         });
         toggleSwitchChangeMode.setMinWidth(ToggleSwitch.USE_COMPUTED_SIZE);

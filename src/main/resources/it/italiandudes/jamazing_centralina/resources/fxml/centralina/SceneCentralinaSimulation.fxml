@@ -49,8 +49,8 @@
                                     <ImageView fx:id="imgv_engine_temp" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                                     <ImageView fx:id="imgv_tire_low" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                                  </children></HBox>
-                              <Label fx:id="lbl_proximity_warning" />
-                              <Label fx:id="lbl_slope_assistance_warning" />
+                              <Label fx:id="lbl_proximity_warning"/>
+                              <Label fx:id="lbl_slope_assistance_warning"/>
                            </children>
                         </VBox>
                      </children>
@@ -71,7 +71,7 @@
                                  <children>
                                     <ImageView fx:id="imgv_gas_tank" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                                     <ProgressBar id="gasoline_bar" fx:id="pb_gasoline_percentage" prefWidth="200.0" progress="0.0" />
-                                    <Label fx:id="lbl_gasoline_percentage" />
+                                    <Label fx:id="lbl_gasoline_percentage"/>
                                  </children>
                               </HBox>
                               <Label id="velocity_meter" fx:id="lbl_speed_counter" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0">

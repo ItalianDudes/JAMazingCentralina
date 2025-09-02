@@ -1,5 +1,6 @@
 .root {
     -fx-font-family: "Lucida Sans";
+    -fx-focus-color: transparent;
 }
 
 .spinner {
@@ -37,4 +38,7 @@
     -fx-border-radius: 0%;
     -fx-padding: 0px;
     -fx-background-color: #F00;
+}
+
+.toggle-switch {
 }
