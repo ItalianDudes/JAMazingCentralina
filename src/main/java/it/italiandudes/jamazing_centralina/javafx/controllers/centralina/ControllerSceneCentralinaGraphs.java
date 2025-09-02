@@ -99,9 +99,10 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         //double[] timeValues = timePile.getElements();
         //if (distanceValues.length != timeValues.length) return;
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        for (int i=0; i<distanceValues.length; i++) {
-            //series.getData().add(new XYChart.Data<>(timeValues[i], distanceValues[i]));
-            series.getData().add(new XYChart.Data<>(i, distanceValues[i]));
+        for (int i=0; i<timeValues.length; i++) {
+            series.getData().add(new XYChart.Data<>(timeValues[i], distanceValues[i]));
+            System.out.println("\n\nSeries: \n\t" + series.getData());
+            //series.getData().add(new XYChart.Data<>(i, distanceValues[i]));
         }
         this.distanceChart.getData().add(series);
     }

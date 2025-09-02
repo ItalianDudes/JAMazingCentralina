@@ -89,8 +89,8 @@ public final class LoadedDataHandler {
         if(this.isInitFilter){
             this.isInitFilter = false;
         }
-        System.out.println("\n\nVelocity batch: \n" + velocityDataBatch);
-        System.out.println("Pressure batch: \n" + pressureDataBatch);
+        //System.out.println("\n\nVelocity batch: \n" + velocityDataBatch);
+        //System.out.println("Pressure batch: \n" + pressureDataBatch);
         degreeRateBatch.addElement(this.filteredPitch);
     }
 
