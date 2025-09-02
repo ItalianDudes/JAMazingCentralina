@@ -1,5 +1,6 @@
 package it.italiandudes.jamazing_centralina.javafx.controllers.centralina;
 
+import it.italiandudes.idl.common.Logger;
 import it.italiandudes.jamazing_centralina.utils.models.DoubleArrayPile;
 import it.italiandudes.jamazing_centralina.utils.models.IntArrayPile;
 import javafx.fxml.FXML;
@@ -11,7 +12,6 @@ import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
 public final class ControllerSceneCentralinaGraphs implements Initializable {
@@ -90,29 +90,23 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
     }
 
     // EDT
-    /*@FXML
-    public void updateDistanceChart(@NotNull IntArrayPile distancePile, @NotNull DoubleArrayPile timePile){
-        if (this.distanceChart == null) return;
-        this.distanceChart.getData().clear();
-        int[] values = distancePile.getElements();
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        for (int i=0; i<values.length; i++) {
-            series.getData().add(new XYChart.Data<>(i, values[i]));
-        }
-        this.distanceChart.getData().add(series);
-    }*/
     @FXML
     public void updateDistanceChart(@NotNull IntArrayPile distancePile, @NotNull DoubleArrayPile timePile){
         if (this.distanceChart == null) return;
         this.distanceChart.getData().clear();
         int[] distanceValues = distancePile.getElements();
         double[] timeValues = timePile.getElements();
-        // if (distanceValues.length != timeValues.length) return;
+        if (distanceValues.length != timeValues.length) {
+            System.err.println("DISTANCE LENGTH: " + distanceValues.length);
+            System.err.println("TIME LENGTH: " + timeValues.length);
+        }
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<timeValues.length; i++) {
-            series.getData().add(new XYChart.Data<>(timeValues[i], distanceValues[i]));
-            System.out.println("\n\nSeries: \n\t" + series.getData());
-            //series.getData().add(new XYChart.Data<>(i, distanceValues[i]));
+            try {
+                series.getData().add(new XYChart.Data<>(timeValues[i], distanceValues[i]));
+            } catch (IndexOutOfBoundsException e) {
+                Logger.log(e);
+            }
         }
         this.distanceChart.getData().add(series);
     }
@@ -123,14 +117,20 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         this.velocityChart.getData().clear();
         double[] values = velocityPile.getElements();
         double[] timeValues = timePile.getElements();
-        if (values.length != timeValues.length) return;
+        if (values.length != timeValues.length) {
+            System.err.println("DISTANCE LENGTH: " + values.length);
+            System.err.println("TIME LENGTH: " + timeValues.length);
+        }
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<values.length; i++) {
-            double value = values[i];
-            if (value == Double.NEGATIVE_INFINITY || value == Double.POSITIVE_INFINITY) value = 0;
-            //System.out.println("Value: " + value);
-            value = (double) Math.round(value * 100) /100;
-            series.getData().add(new XYChart.Data<>(timeValues[i], value));
+            try {
+                double value = values[i];
+                if (value == Double.NEGATIVE_INFINITY || value == Double.POSITIVE_INFINITY) value = 0;
+                value = (double) Math.round(value * 100) /100;
+                series.getData().add(new XYChart.Data<>(timeValues[i], value));
+            } catch (IndexOutOfBoundsException e) {
+                Logger.log(e);
+            }
         }
         this.velocityChart.getData().add(series);
     }
@@ -141,11 +141,17 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         this.temperatureChart.getData().clear();
         int[] values = temperaturePile.getElements();
         double[] timeValues = timePile.getElements();
-        if (values.length != timeValues.length) return;
+        if (values.length != timeValues.length) {
+            System.err.println("DISTANCE LENGTH: " + values.length);
+            System.err.println("TIME LENGTH: " + timeValues.length);
+        }
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<values.length; i++) {
-            //System.out.println("Value: " + value);
-            series.getData().add(new XYChart.Data<>(timeValues[i], values[i]));
+            try {
+                series.getData().add(new XYChart.Data<>(timeValues[i], values[i]));
+            } catch (IndexOutOfBoundsException e) {
+                Logger.log(e);
+            }
         }
         this.temperatureChart.getData().add(series);
     }
@@ -156,11 +162,17 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         this.humidityChart.getData().clear();
         int[] values = humidityPile.getElements();
         double[] timeValues = timePile.getElements();
-        if (values.length != timeValues.length) return;
+        if (values.length != timeValues.length) {
+            System.err.println("DISTANCE LENGTH: " + values.length);
+            System.err.println("TIME LENGTH: " + timeValues.length);
+        }
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<values.length; i++) {
-            //System.out.println("Value: " + value);
-            series.getData().add(new XYChart.Data<>(timeValues[i], values[i]));
+            try {
+                series.getData().add(new XYChart.Data<>(timeValues[i], values[i]));
+            } catch (IndexOutOfBoundsException e) {
+                Logger.log(e);
+            }
         }
         this.humidityChart.getData().add(series);
     }
@@ -171,11 +183,17 @@ public final class ControllerSceneCentralinaGraphs implements Initializable {
         this.pressureChart.getData().clear();
         int[] values = pressurePile.getElements();
         double[] timeValues = timePile.getElements();
-        if (values.length != timeValues.length) return;
+        if (values.length != timeValues.length) {
+            System.err.println("DISTANCE LENGTH: " + values.length);
+            System.err.println("TIME LENGTH: " + timeValues.length);
+        }
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         for (int i=0; i<values.length; i++) {
-            //System.out.println("Value: " + value);
-            series.getData().add(new XYChart.Data<>(timeValues[i], values[i]));
+            try {
+                series.getData().add(new XYChart.Data<>(timeValues[i], values[i]));
+            } catch (IndexOutOfBoundsException e) {
+                Logger.log(e);
+            }
         }
         this.pressureChart.getData().add(series);
     }

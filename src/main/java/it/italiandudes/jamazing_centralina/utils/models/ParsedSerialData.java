@@ -8,8 +8,8 @@ public final class ParsedSerialData {
     private int humidity;
     private int temperature;
     private int pressure;
-    private int[] acceleration;
-    private int[] degreeRates;
+    private final int[] acceleration;
+    private final int[] degreeRates;
     private int timePeriod;
 
     public ParsedSerialData(){

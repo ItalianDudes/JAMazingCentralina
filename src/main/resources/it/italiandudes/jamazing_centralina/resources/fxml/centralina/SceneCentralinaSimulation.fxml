@@ -43,7 +43,7 @@
                         <VBox alignment="CENTER" spacing="10.0" GridPane.rowIndex="1">
                            <children>
                               <Button id="btn_onoff" fx:id="btn_onoff" mnemonicParsing="false" onAction="#onoff_pressed" VBox.vgrow="ALWAYS" />
-                              <HBox fx:id="hbox_signals" alignment="CENTER" maxHeight="-Infinity" VBox.vgrow="ALWAYS">
+                              <HBox alignment="CENTER" maxHeight="-Infinity" VBox.vgrow="ALWAYS">
                                  <children>
                                     <ImageView fx:id="imgv_parked" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                                     <ImageView fx:id="imgv_engine_temp" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />

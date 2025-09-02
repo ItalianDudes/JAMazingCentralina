@@ -2,21 +2,14 @@ package it.italiandudes.jamazing_centralina.javafx.controllers.centralina;
 
 import it.italiandudes.jamazing_centralina.javafx.JFXDefs;
 import it.italiandudes.jamazing_centralina.utils.models.Simulation;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.SVGPath;
 
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -27,7 +20,6 @@ public final class ControllerSceneCentralinaSimulation implements Initializable 
     private final DecimalFormat velocityFormatter = new DecimalFormat("#.##");
 
     @FXML private Button btn_onoff;
-    @FXML private HBox hbox_signals;
     @FXML private ProgressBar pb_gasoline_percentage;
     @FXML private Label lbl_gasoline_percentage;
     @FXML private Label lbl_speed_counter;
@@ -66,7 +58,7 @@ public final class ControllerSceneCentralinaSimulation implements Initializable 
     }
 
     @FXML
-    public void onoff_pressed(ActionEvent actionEvent) {
+    public void onoff_pressed() {
         centralinaSim.setEngine();
     }
 

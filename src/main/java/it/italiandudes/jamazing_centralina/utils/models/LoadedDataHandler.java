@@ -2,8 +2,7 @@ package it.italiandudes.jamazing_centralina.utils.models;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public final class LoadedDataHandler {
 
     private final double G = 9.81;
@@ -126,11 +125,7 @@ public final class LoadedDataHandler {
         double pitchDegree = Math.toDegrees(pitch);
         if (pitchDegree > 75.0) {
             this.filteredPitch = 75.0;
-        } else if (pitchDegree < -75.0) {
-            this.filteredPitch = -75.0;
-        }else{
-            this.filteredPitch = pitchDegree;
-        }
+        } else this.filteredPitch = Math.max(pitchDegree, -75.0);
 
         double gX = G * Math.pow(10, 3) * Math.sin(pitch);
         double gY = -G * Math.pow(10, 3) * Math.sin(roll);

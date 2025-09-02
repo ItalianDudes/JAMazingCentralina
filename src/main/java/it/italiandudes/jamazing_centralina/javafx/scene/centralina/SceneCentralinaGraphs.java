@@ -5,7 +5,6 @@ import it.italiandudes.jamazing_centralina.javafx.Client;
 import it.italiandudes.jamazing_centralina.javafx.JFXDefs;
 import it.italiandudes.jamazing_centralina.javafx.components.SceneController;
 import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaGraphs;
-import it.italiandudes.jamazing_centralina.javafx.controllers.centralina.ControllerSceneCentralinaSimulation;
 import it.italiandudes.jamazing_centralina.utils.Defs;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -3,9 +3,9 @@ package it.italiandudes.jamazing_centralina.utils.models;
 import java.util.Arrays;
 
 public final class DoubleArrayPile {
-    private int capacity;
+    private final int capacity;
     private int size;
-    private double[] elements;
+    private final double[] elements;
 
     public DoubleArrayPile(int capacity) {
         this.capacity = capacity;

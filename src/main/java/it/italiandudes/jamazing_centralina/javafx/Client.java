@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 public final class Client extends Application {
 
     // Attributes
@@ -42,7 +43,7 @@ public final class Client extends Application {
         stage.setTitle(JFXDefs.AppInfo.NAME);
         stage.getIcons().add(JFXDefs.AppInfo.LOGO);
         SCENE = SceneMainMenu.getScene();
-        stage.setScene(new Scene(SCENE.getParent()));
+        stage.setScene(new Scene(SCENE.parent()));
         Logger.log("Loading Theme...", Defs.LOGGER_CONTEXT);
         ThemeHandler.loadConfigTheme(stage.getScene());
         stage.show();
@@ -98,7 +99,7 @@ public final class Client extends Application {
             return;
         }
         SCENE = newScene;
-        STAGE.getScene().setRoot(newScene.getParent());
+        STAGE.getScene().setRoot(newScene.parent());
     }
     @NotNull
     public static Stage initPopupStage(@Nullable final SceneController sceneController) {
@@ -112,7 +113,7 @@ public final class Client extends Application {
         popupStage.setTitle(JFXDefs.AppInfo.NAME);
         popupStage.initOwner(STAGE);
         popupStage.initModality(Modality.WINDOW_MODAL);
-        popupStage.setScene(new Scene(sceneController.getParent()));
+        popupStage.setScene(new Scene(sceneController.parent()));
         ThemeHandler.loadConfigTheme(popupStage.getScene());
         return popupStage;
     }

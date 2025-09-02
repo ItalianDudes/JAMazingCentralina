@@ -35,25 +35,25 @@ public final class ControllerSceneCentralina {
         toggleSwitchChangeMode.setMaxWidth(ToggleSwitch.USE_COMPUTED_SIZE);
         toggleSwitchChangeMode.setMaxHeight(ToggleSwitch.USE_COMPUTED_SIZE);
 
-        ap_placeholder_pane.getChildren().setAll(sceneControllerCentralinaSimulation.getParent());
-        AnchorPane.setTopAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
-        AnchorPane.setLeftAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
-        AnchorPane.setBottomAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
-        AnchorPane.setRightAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
+        ap_placeholder_pane.getChildren().setAll(sceneControllerCentralinaSimulation.parent());
+        AnchorPane.setTopAnchor(sceneControllerCentralinaSimulation.parent(), 0.0);
+        AnchorPane.setLeftAnchor(sceneControllerCentralinaSimulation.parent(), 0.0);
+        AnchorPane.setBottomAnchor(sceneControllerCentralinaSimulation.parent(), 0.0);
+        AnchorPane.setRightAnchor(sceneControllerCentralinaSimulation.parent(), 0.0);
 
         toggleSwitchChangeMode.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                ap_placeholder_pane.getChildren().setAll(sceneControllerCentralinaGraph.getParent());
-                AnchorPane.setTopAnchor(sceneControllerCentralinaGraph.getParent(), 0.0);
-                AnchorPane.setLeftAnchor(sceneControllerCentralinaGraph.getParent(), 0.0);
-                AnchorPane.setBottomAnchor(sceneControllerCentralinaGraph.getParent(), 0.0);
-                AnchorPane.setRightAnchor(sceneControllerCentralinaGraph.getParent(), 0.0);
+                ap_placeholder_pane.getChildren().setAll(sceneControllerCentralinaGraph.parent());
+                AnchorPane.setTopAnchor(sceneControllerCentralinaGraph.parent(), 0.0);
+                AnchorPane.setLeftAnchor(sceneControllerCentralinaGraph.parent(), 0.0);
+                AnchorPane.setBottomAnchor(sceneControllerCentralinaGraph.parent(), 0.0);
+                AnchorPane.setRightAnchor(sceneControllerCentralinaGraph.parent(), 0.0);
             } else {
-                ap_placeholder_pane.getChildren().setAll(sceneControllerCentralinaSimulation.getParent());
-                AnchorPane.setTopAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
-                AnchorPane.setLeftAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
-                AnchorPane.setBottomAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
-                AnchorPane.setRightAnchor(sceneControllerCentralinaSimulation.getParent(), 0.0);
+                ap_placeholder_pane.getChildren().setAll(sceneControllerCentralinaSimulation.parent());
+                AnchorPane.setTopAnchor(sceneControllerCentralinaSimulation.parent(), 0.0);
+                AnchorPane.setLeftAnchor(sceneControllerCentralinaSimulation.parent(), 0.0);
+                AnchorPane.setBottomAnchor(sceneControllerCentralinaSimulation.parent(), 0.0);
+                AnchorPane.setRightAnchor(sceneControllerCentralinaSimulation.parent(), 0.0);
             }
         });
         toggleSwitchChangeMode.setMinWidth(ToggleSwitch.USE_COMPUTED_SIZE);

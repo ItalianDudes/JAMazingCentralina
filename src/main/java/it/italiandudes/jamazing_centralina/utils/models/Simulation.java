@@ -1,6 +1,7 @@
 package it.italiandudes.jamazing_centralina.utils.models;
 
-public class Simulation {
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
+public final class Simulation {
 
     // Constants
     private final double FUEL_MM_CONSUMPTION = 0.044 * Math.pow(10, -6); // Fuel liters consumed per mm
@@ -133,13 +134,11 @@ public class Simulation {
 
     @Override
     public String toString() {
-        String str =
-                "\n\nSim data:" +
-                "\n\tIs engine on: " + this.isEngineOn +
-                "\n\tFuel %: " + this.fuelPercentage +
-                "\n\tFuel quantity: " + this.fuelQuantity +
-                "\n\tVelocity: " + this.velocity +
-                "\n\tTire pressure: " + this.dataHandler.getPressureDataBatch().getLastElement();
-        return str;
+        return "\n\nSim data:" +
+        "\n\tIs engine on: " + this.isEngineOn +
+        "\n\tFuel %: " + this.fuelPercentage +
+        "\n\tFuel quantity: " + this.fuelQuantity +
+        "\n\tVelocity: " + this.velocity +
+        "\n\tTire pressure: " + this.dataHandler.getPressureDataBatch().getLastElement();
     }
 }

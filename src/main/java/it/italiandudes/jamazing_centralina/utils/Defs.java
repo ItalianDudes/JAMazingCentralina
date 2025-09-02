@@ -13,9 +13,6 @@ import java.util.Objects;
 
 public final class Defs {
 
-    // App File Name
-    public static final String APP_FILE_NAME = "JAMazingCentralina";
-
     // Current Platform
     @Nullable public static final TargetPlatform CURRENT_PLATFORM = TargetPlatform.getCurrentPlatform();
 
@@ -65,8 +62,6 @@ public final class Defs {
             private static final String IMAGE_DIR = PROJECT_RESOURCES_ROOT + "image/";
             public static final String IMAGE_DARK_MODE = IMAGE_DIR + "dark_mode.png";
             public static final String IMAGE_LIGHT_MODE = IMAGE_DIR + "light_mode.png";
-            public static final String IMAGE_TICK = IMAGE_DIR + "tick.png";
-            public static final String IMAGE_CROSS = IMAGE_DIR + "cross.png";
         }
     }
 

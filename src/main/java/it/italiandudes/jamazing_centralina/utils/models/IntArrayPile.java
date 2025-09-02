@@ -1,13 +1,11 @@
 package it.italiandudes.jamazing_centralina.utils.models;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 
 public final class IntArrayPile {
-    private int capacity;
+    private final int capacity;
     private int size;
-    private int[] elements;
+    private final int[] elements;
 
     public IntArrayPile(int capacity) {
         this.capacity = capacity;

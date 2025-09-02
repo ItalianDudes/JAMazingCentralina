@@ -132,13 +132,13 @@ public final class JAMazingCentralina {
                 ParsedSerialData parsedSerialData = new ParsedSerialData();
                 LoadedDataHandler loadedDataHandler = new LoadedDataHandler();
                 Simulation sim = new Simulation(loadedDataHandler);
-                Object controller = Client.getScene().getController();
+                Object controller = Client.getScene().controller();
                 if (!(controller instanceof ControllerSceneCentralina controllerSceneCentralina)) return;
-                ControllerSceneCentralinaSimulation simController = (ControllerSceneCentralinaSimulation) controllerSceneCentralina.getSceneControllerCentralinaSimulation().getController();
+                ControllerSceneCentralinaSimulation simController = (ControllerSceneCentralinaSimulation) controllerSceneCentralina.getSceneControllerCentralinaSimulation().controller();
                 simController.setCentralinaSim(sim);
-                ControllerSceneCentralinaGraphs graphsController = (ControllerSceneCentralinaGraphs) controllerSceneCentralina.getSceneControllerCentralinaGraph().getController();
+                ControllerSceneCentralinaGraphs graphsController = (ControllerSceneCentralinaGraphs) controllerSceneCentralina.getSceneControllerCentralinaGraph().controller();
                 StringBuilder buffer = new StringBuilder();
-                boolean firstline = true;
+                boolean firstLine = true;
                 int data;
                 while (!threadStop && (data = in.read()) != -1) {
                     try{
@@ -149,11 +149,11 @@ public final class JAMazingCentralina {
                             //System.out.println(line);
                             parsedSerialData.parseData(line);
 
-                            if(firstline){
+                            if(firstLine){
                                 loadedDataHandler.initData(parsedSerialData, Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE,
                                         Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE,
                                         Defs.SimulationSettings.MAX_BATCH_SIZE, Defs.SimulationSettings.MAX_BATCH_SIZE, 0.98);
-                                firstline = false;
+                                firstLine = false;
                             }else{
                                 loadedDataHandler.updateData(parsedSerialData);
                             }
@@ -179,7 +179,7 @@ public final class JAMazingCentralina {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Logger.log(e);
             } finally {
                 comPort.closePort();
             }
